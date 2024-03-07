@@ -1,0 +1,8 @@
+
+
+
+
+-Navbar
+-HomePage
+    -Slider
+-LoginPage
