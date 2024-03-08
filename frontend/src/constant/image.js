@@ -1,7 +1,3 @@
-export const NAVBAR_IMG = "https://www.eurekaforbes.com/media/logo/stores/1/whiteLogo_1.png";
-
-
-
 export const SLIDER_IMG = [
     "https://www.eurekaforbes.com/media/wysiwyg/hero-banners/Genuine-Service-Banner-d.jpg",
     "https://www.eurekaforbes.com/media/wysiwyg/DesktopNewProductLaunchBanner.jpg",

@@ -8,7 +8,7 @@ const Carousel = () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrent(current => current === SLIDER_IMG.length - 1 ? 0 : current + 1);
-        }, 3000);
+        }, 5000);
 
         return () => clearInterval(timer);
     }, []);
@@ -21,10 +21,14 @@ const Carousel = () => {
         setCurrent(current === 0 ? SLIDER_IMG.length - 1 : current - 1);
     };
 
+    const goToSlide = (index) => {
+        setCurrent(index);
+    };
+
     return (
-        <div className="relative">
-            <div className="overflow-hidden w-screen">
-                <div className="flex transition ease-out duration-300 scroll-smooth" style={{transform : `translate(-${current * 100}%)`}}>
+        <div className="relative flex justify-center w-[98.9vw]">
+            <div className="overflow-hidden">
+                <div className="flex transition ease-out duration-300 scroll-smooth bg-gradient-to-b  from-black/65" style={{transform : `translate(-${current * 100}%)`}}>
                     {SLIDER_IMG.map((img, index) => {
                         return <img key={index} src={img} alt="slider" className="min-w-[100%] h-auto" />;
                     })}
@@ -38,7 +42,8 @@ const Carousel = () => {
                 {SLIDER_IMG.map((_, index) => (
                     <div
                         key={index}
-                        className={`h-2 w-2  md:h-4 md:w-4 rounded-full ${current === index ? 'bg-white' : 'bg-gray-400'}`}
+                        className={`h-1 md:h-3 rounded-full ${current === index ? 'bg-white w-4 md:w-12' : 'bg-gray-400 w-1 md:w-3'} cursor-pointer transition ease-out duration-300`}
+                        onClick={() => goToSlide(index)}
                     />
                 ))}
             </div>

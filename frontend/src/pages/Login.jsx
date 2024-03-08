@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import Navbar from "../components/Navbar";
 
 
 
@@ -15,15 +16,17 @@ const Login = () => {
 
   
   return (
-    <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 my-2 mx-5 md:mx-0 md:my-0 md:items-center">
+    <>
+    <Navbar />
+    <section className="md:h-[calc(100vh-3.5rem)] pb-20 flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-16 md:my-0 items-center md:justify-center">
       <div className="md:w-1/3 max-w-sm hidden md:block">
         <img
           src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
           alt="Sample image"
         />
       </div>
-      <div className="md:w-1/3 max-w-sm">
-        <div className="text-center md:text-left">
+      <div className="md:w-1/3 max-w-sm px-4">
+        <div className="text-left">
           <label className="mr-1 text-2xl font-bold">{signIn ? "Sign in" : "Log in"}</label> <br />
           <button className="w-full border border-black mt-2 py-2 rounded-md font-semibold flex items-center justify-center"><FcGoogle className="mr-2 text-xl"/> Google</button>
         </div>
@@ -78,6 +81,7 @@ const Login = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
