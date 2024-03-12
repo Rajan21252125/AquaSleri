@@ -1,32 +1,46 @@
-const express = require('express');
+import express from 'express';
+import mongoose from 'mongoose';
+import { config as dotenvConfig } from 'dotenv';
+import UserRoute from './Routes/UserRoute.js';
+import cors from 'cors';
+
+dotenvConfig();
+
 const app = express();
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-
-
-const MONGODB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
+// Middleware
+app.use(express.json());
 
-// port listening
-app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
-});
-
-
-
-// basic route
+// Basic route
 app.get("/", (req, res) => {
     res.send("Hello World");
-})
+});
 
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
+
+// route for user login 
+app.use('/api/users', UserRoute);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log("Connected to MongoDB");
+        // Start the server after successfully connecting to MongoDB
+        app.listen(PORT, () => {
+            console.log(`Server is running on port http://localhost:${PORT}`);
+        });
     })
     .catch((error) => {
         console.error("Error connecting to MongoDB:", error);
     });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
