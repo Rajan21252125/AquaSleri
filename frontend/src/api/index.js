@@ -9,6 +9,8 @@ export const googleLogin = (credentials) => API.post(`/users/googlelogin`, {acce
 export const googleSignup = (credentials) => API.post(`/users/googlesignup`, {accessToken : credentials});
 export const userId = (id) => API.get(`/users/${id}`);
 export const userData = (token) => API.get(`/users/auth/userDetail`, { headers: { Authorization: `Bearer ${token}` } });
+export const uploadImage = (token,data) => API.post(`/users/upload`, data , { headers: { Authorization: `Bearer ${token}`}});
+export const updateUser = (token,data) => API.put(`/users/updateUser`, data , { headers: { Authorization: `Bearer ${token}`}});
 
   
 // Authorization

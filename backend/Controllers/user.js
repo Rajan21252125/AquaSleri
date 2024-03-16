@@ -25,13 +25,9 @@ export const signup = async (req, res) => {
         return res.status(400).json({ msg: result.errors[0].msg });
     }
 
-    const { email, password, phone, fullName, role } = req.body;
+    const { email, password, fullName } = req.body;
     if (await User.findOne({ email })) {
         return res.status(400).json({ msg: 'User already exists.' });
-    }
-
-    if(await User.findOne({phone})){
-        return res.status(400).json({ msg: 'Phone number already exists.' });
     }
 
     try {
@@ -42,7 +38,6 @@ export const signup = async (req, res) => {
         const user = await User.create({
             email,
             password: hashedPassword,
-            phone,
             fullName,
         });
 
@@ -68,15 +63,8 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Check if the email is an email or phone number
-        let user;
-        if (typeof email === "string" && email.includes('@')) {
-            // email is an email
-            user = await User.findOne({ email: email });
-        } else {
-            // email is a phone number
-            user = await User.findOne({ phone: email });
-        }
+        // Check if the email is an email
+        const user = await User.findOne({ email: email });
 
         // Check if the user exists
         if (!user) {
@@ -106,7 +94,7 @@ export const login = async (req, res) => {
 
 
 
-
+// get the user detail 
 export const getUserDetail = async (req,res) => {
     try {
         const user = await User.findById(req.user.user.id).select('-password');
@@ -119,3 +107,31 @@ export const getUserDetail = async (req,res) => {
         return res.status(500).json({ msg: 'Internal Server Error' });
     }
 }
+
+
+
+
+
+// update the user detail
+export const updateUserDetail = async (req, res) => {
+    try {
+        const userId = req.user.user.id;
+        const { fullName, password, image } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Find the user by ID and update the fields
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { fullName, hashedPassword, image },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ msg: 'User not found.' });
+        }
+
+        return res.status(200).json({ msg: 'Update Successfully!', user: updatedUser });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+};

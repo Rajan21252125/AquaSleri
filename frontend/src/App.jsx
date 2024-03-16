@@ -1,23 +1,29 @@
-import Login from "./pages/Login";
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Purifier from "./pages/Purifier";
-import WaterSolution from "./pages/WaterSolution";
-import Service from "./pages/Service";
-import NewArrival from "./pages/NewArrival";
-import Amc from "./pages/Amc";
-import Cart from "./pages/Cart";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import useUserDeatil from "./customHook/useUserDeatil";
+import useUserDetail from "./customHook/useUserDeatil";
 import Error from "./pages/Error";
-import Profile from "./pages/Profile";
+import Loading from "./components/Loading";
+
+// Lazy-loaded components
+const Login = lazy(() => import("./pages/Login"));
+const Home = lazy(() => import("./pages/Home"));
+const Purifier = lazy(() => import("./pages/Purifier"));
+const WaterSolution = lazy(() => import("./pages/WaterSolution"));
+const Service = lazy(() => import("./pages/Service"));
+const NewArrival = lazy(() => import("./pages/NewArrival"));
+const Amc = lazy(() => import("./pages/Amc"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const App = () => {
   const token = localStorage.getItem("id");
-  useUserDeatil(token);
+  useUserDetail(token);
+
   return (
-      <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
-        <Router>
+    <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
+      <Router>
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
@@ -30,8 +36,9 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<Error />} />
           </Routes>
-        </Router>
-      </GoogleOAuthProvider>
+        </Suspense>
+      </Router>
+    </GoogleOAuthProvider>
   );
 };
 

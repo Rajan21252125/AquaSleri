@@ -26,11 +26,11 @@ const Carousel = () => {
     };
 
     return (
-        <div className="relative flex justify-center w-[98.9vw]">
+        <div className="relative flex justify-center w-screen">
             <div className="overflow-hidden">
-                <div className="flex transition ease-out duration-300 scroll-smooth bg-gradient-to-b  from-black/65" style={{transform : `translate(-${current * 100}%)`}}>
+                <div className="flex transition ease-out duration-300 scroll-smooth" style={{transform : `translate(-${current * 100}%)`}}>
                     {SLIDER_IMG.map((img, index) => {
-                        return <img key={index} src={img} alt="slider" className="min-w-[100%] h-auto" />;
+                        return <img key={index} src={img} alt="slider" className="min-w-[100%] h-60 object-contain md:h-auto bg-gradient-to-b  from-black/65" />;
                     })}
                 </div>
             </div>

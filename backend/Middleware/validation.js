@@ -11,7 +11,6 @@ export const validateSignup = [
     body('password')
         .isLength({ min: 8 })
         .withMessage('Password should contain at least 8 characters'),
-    body('phone').isMobilePhone().withMessage('Invalid phone number format'),
     body('fullName')
         .isLength({ min: 3 }).withMessage('Full name should contain at least 3 characters')
         .custom(isValidFullName).withMessage('Full name should only contain alphabets and spaces')

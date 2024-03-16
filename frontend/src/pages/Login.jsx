@@ -14,7 +14,6 @@ const Login = () => {
     email: "",
     password: "",
     fullName: "",
-    phone: "",
   });
 
   const toggleSignupForm = () => {
@@ -128,14 +127,6 @@ const Login = () => {
                     placeholder="Full Name"
                     name="fullName"
                     value={formData.fullName}
-                    onChange={handleChange}
-                  />
-                  <input
-                    className="text-sm w-full px-4 py-2 mt-4 border border-solid border-gray-300 rounded"
-                    type="text"
-                    placeholder="Phone Number"
-                    name="phone"
-                    value={formData.phone}
                     onChange={handleChange}
                   />
                 </div>

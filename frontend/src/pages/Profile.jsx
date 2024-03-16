@@ -3,6 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import { removeUser } from "../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
+import { FaRegEye , FaRegEyeSlash } from "react-icons/fa";
+import { updateUser, uploadImage } from "../api";
+import { toast } from "react-toastify";
+
+
+
+
+
 
 const Profile = () => {
   const { user } = useSelector((state) => state.userDetail);
@@ -10,9 +18,15 @@ const Profile = () => {
   const navigate = useNavigate();
   const [dragging, setDragging] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [show , setShow ] = useState(false);
+  const [ loading , setLoading ] = useState(false);
+  const [ imageError , setImageError ] = useState(false);
+
+
 
   // State for form inputs
   const [formData, setFormData] = useState({
+    email: user?.email,
     username: user?.fullName || "",
     password: "",
     image: user?.image || "",
@@ -24,10 +38,29 @@ const Profile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+  // Function to toggle show password
+  const toggleShowPassword = () => {
+    setShow(!show);
+  };
+
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+    if(imageError) return
+    await uploadImg();
+    const token = JSON.parse(localStorage.getItem("id"));
+    try {
+      const reponse = await updateUser(token, formData)
+      setLoading(false);
+      toast.success(reponse.data.msg);
+      setFormData({fullName: user?.fullName, password: "", image: user?.image});
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+      setLoading(false)
+    }
+
   };
 
   // Logout function
@@ -54,12 +87,26 @@ const Profile = () => {
     setDragging(false);
   };
 
-  // Function to handle clicking on the image
-  const onImageClick = () => {
-    // Trigger input file click event
-    const inputElement = document.getElementById("imageUpload");
-    inputElement.click();
-  };
+
+  const uploadImg = async () => {
+    const token = JSON.parse(localStorage.getItem("id"));
+    const data = new FormData();
+    data.append("image", formData.image);
+    try {
+      const response = await uploadImage(token, data);
+      if (response.status !== 200) {
+        setImageError(true);
+        return;
+      }
+      setFormData({ ...formData, image: response.data.imageUrl })
+      setImageError(false);
+    } catch (error) {
+      toast.error(error?.response?.data?.msg)
+      setImageError(true);
+    }
+
+  }
+
 
   return (
     <div>
@@ -78,7 +125,6 @@ const Profile = () => {
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragLeave={onDragLeave}
-            onClick={onImageClick} // Add onClick event handler
           >
             {previewImage ? (
               <img
@@ -113,7 +159,19 @@ const Profile = () => {
           {/* Username field */}
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
-              Username:
+              Email Id:
+            </label>
+            <input
+              className="border rounded-md px-4 py-2 w-full"
+              type="text"
+              name="email"
+              value={formData.email}
+              readOnly  
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Full Name:
             </label>
             <input
               className="border rounded-md px-4 py-2 w-full"
@@ -124,42 +182,36 @@ const Profile = () => {
             />
           </div>
           {/* Password field */}
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 font-bold mb-2">
               Password:
             </label>
             <input
               className="border rounded-md px-4 py-2 w-full"
-              type="password"
+              type={show ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
             />
+            <span className="absolute right-4 top-10 cursor-pointer text-2xl" onClick={toggleShowPassword}>{show ? <FaRegEye /> : <FaRegEyeSlash /> }</span>
           </div>
           {/* Submit button */}
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
             type="submit"
           >
-            Save Changes
+            {loading ? "Loading...." : "Save Changes"}
           </button>
         </form>
-      </div>
-      {/* Display email and phone number */}
-      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-        <p className="text-gray-700 font-bold">Email: {user?.email}</p>
-        <p className="text-gray-700 font-bold">
-          Phone Number: {user?.phone}
-        </p>
-      </div>
       {/* Logout button */}
-      <div className="max-w-md mx-auto mt-8">
+      <div className="my-2 mb-14">
         <button
-          className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+          className="bg-red-500 text-white w-full py-2 px-4 rounded-md hover:bg-red-600"
           onClick={toggleLogout}
         >
           Logout
         </button>
+      </div>
       </div>
     </div>
   );
