@@ -6,24 +6,24 @@ dotenv.config();
 const auth = (req, res, next) => {
   try {
     // Get the token from the request headers
-    const token = req.header('Authorization');
+    const token = req.cookies.token
     // Check if token exists
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ status:false, message: 'Unauthorized' });
     }
 
     // Verify the token and extract user ID
-    JWT.verify(token.replace("Bearer ", "").trim(), process.env.JWT_SECRET, (err, decoded) => {
+    JWT.verify(token, process.env.JWT_SECRET, (err, data) => {
       if (err) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return res.status(401).json({ status:false, message: 'Invalid token' });
       }
-      // If token is valid, attach the decoded payload to the request object
-      req.user = decoded;
+      // If token is valid, attach the data payload to the request object
+      req.user = data;
       next();
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Internal Server Error" });
+    res.status(500).json({ status:false, msg: "Internal Server Error" });
   }
 };
 

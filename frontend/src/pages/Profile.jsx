@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import { removeUser } from "../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { FaRegEye , FaRegEyeSlash } from "react-icons/fa";
-import { updateUser, uploadImage } from "../api";
+import { logout, updateUser, uploadImage } from "../api";
 import { toast } from "react-toastify";
 
 
@@ -21,6 +21,7 @@ const Profile = () => {
   const [show , setShow ] = useState(false);
   const [ loading , setLoading ] = useState(false);
   const [ imageError , setImageError ] = useState(false);
+  const typeOfUser = useSelector((state) => state.userDetail.googleUser);
 
 
 
@@ -50,22 +51,22 @@ const Profile = () => {
     setLoading(true);
     if(imageError) return
     await uploadImg();
-    const token = JSON.parse(localStorage.getItem("id"));
     try {
-      const reponse = await updateUser(token, formData)
+      const reponse = await updateUser(formData)
       setLoading(false);
       toast.success(reponse.data.msg);
       setFormData({fullName: user?.fullName, password: "", image: user?.image});
+      navigate("/")
     } catch (error) {
       toast.error(error?.response?.data?.msg);
       setLoading(false)
     }
-
+    setLoading(false);
   };
 
   // Logout function
   const toggleLogout = () => {
-    localStorage.removeItem("id");
+    logout()
     dispatch(removeUser());
     navigate("/");
   };
@@ -89,18 +90,20 @@ const Profile = () => {
 
 
   const uploadImg = async () => {
-    const token = JSON.parse(localStorage.getItem("id"));
     const data = new FormData();
     data.append("image", formData.image);
+    if (!data) return;
     try {
-      const response = await uploadImage(token, data);
+      const response = await uploadImage(data);
       if (response.status !== 200) {
         setImageError(true);
         return;
       }
       setFormData({ ...formData, image: response.data.imageUrl })
+      console.log(response.data.imageUrl)
       setImageError(false);
     } catch (error) {
+      if (error?.response?.status === 400) return
       toast.error(error?.response?.data?.msg)
       setImageError(true);
     }
@@ -187,11 +190,12 @@ const Profile = () => {
               Password:
             </label>
             <input
-              className="border rounded-md px-4 py-2 w-full"
+              className={`border rounded-md px-4 py-2 w-full ${typeOfUser ? "cursor-not-allowed" : "" }`}
               type={show ? "text" : "password"}
+              disabled={typeOfUser ? true : false}
               name="password"
               value={formData.password}
-              onChange={handleChange}
+              onChange={!typeOfUser ? handleChange : null }
             />
             <span className="absolute right-4 top-10 cursor-pointer text-2xl" onClick={toggleShowPassword}>{show ? <FaRegEye /> : <FaRegEyeSlash /> }</span>
           </div>
@@ -206,8 +210,9 @@ const Profile = () => {
       {/* Logout button */}
       <div className="my-2 mb-14">
         <button
-          className="bg-red-500 text-white w-full py-2 px-4 rounded-md hover:bg-red-600"
+          className="bg-red-500 text-white w-full cursor-pointer py-2 px-4 rounded-md hover:bg-red-600"
           onClick={toggleLogout}
+          disabled={typeOfUser ? true : false}
         >
           Logout
         </button>

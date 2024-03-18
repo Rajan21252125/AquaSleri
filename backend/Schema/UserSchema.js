@@ -18,6 +18,10 @@ const userSchema = new Schema({
   image: {
     type: String,
     default: ""
+  },
+  createdAt : {
+    type: Date,
+    default: new Date()
   }
 });
 

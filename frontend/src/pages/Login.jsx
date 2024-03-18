@@ -5,6 +5,8 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { signUp, login, googleLogin, googleSignup } from "../api/index";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { typeofUser } from "../store/slice/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const Login = () => {
     password: "",
     fullName: "",
   });
+  const dispatch = useDispatch();
 
   const toggleSignupForm = () => {
     setToggleSignup(!toggleSignup);
@@ -28,10 +31,9 @@ const Login = () => {
     if (toggleSignup) {
       try {
         const { data } = await googleSignup(res.credential);
-        const token = data.token;
         navigate("/");
-        localStorage.setItem("id", JSON.stringify(token));
-        toast.success("Account created successfully");
+        toast.success();
+        dispatch(typeofUser(true))
       } catch (error) {
         console.log(error);
         toast.error("Error creating account");
@@ -39,10 +41,9 @@ const Login = () => {
     } else {
       try {
         const { data } = await googleLogin(res.credential);
-        const token = data.token;
         navigate("/");
-        localStorage.setItem("id", JSON.stringify(token));
         toast.success("Logged in successfully");
+        dispatch(typeofUser(true))
       } catch (error) {
         console.log(error);
         toast.error("Error logging in");
@@ -64,16 +65,14 @@ const Login = () => {
     try {
       if (toggleSignup) {
         const { data } = await signUp(formData);
-        const token = data.token;
         navigate("/");
-        localStorage.setItem("id", JSON.stringify(token));
-        toast.success("Account created successfully");
+        toast.success(data?.msg);
+        dispatch(typeofUser(false))
       } else {
         const { data } = await login(formData);
-        const token = data.token;
         navigate("/");
-        localStorage.setItem("id", JSON.stringify(token));
-        toast.success("Logged in successfully");
+        toast.success(data?.msg);
+        dispatch(typeofUser(false))
       }
     } catch (error) {
       console.log(error?.response?.data?.msg);

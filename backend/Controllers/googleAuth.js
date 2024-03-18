@@ -11,7 +11,7 @@ export const googleSignUp = async (req, res) => {
   try {
     const existingUser = await Users.findOne({ email });
     if (existingUser) {
-      return res.status(401).json({ message: "User already exists" });
+      return res.status(401).json({status: false , message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(sub, 10);
     const newUser = await Users.create({
@@ -23,17 +23,21 @@ export const googleSignUp = async (req, res) => {
     const data = {
       user: {
           id: newUser.id,
-          email: newUser.email
       }
   };
     const token = jwt.sign(
       data,
       process.env.JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: 3 * 24 * 60 * 60 }
     );
-    res.status(201).json({ user: { fullName: newUser.name }, token });
+    res.cookie("token", token, {
+      withCredentials: true,
+      httpOnly: false,
+    });
+    res.status(201).json({ status: true , msg: "User created Successfully" });
   } catch (error) {
     console.log(error);
+    res.status(501).json({ status: false , msg: "Internal server issue" });
   }
 };
 
@@ -43,7 +47,7 @@ export const googleLogin = async (req, res) => {
   try {
     const existingUser = await Users.findOne({ email });
     if (!existingUser) {
-      return res.status(401).json({ message: "User does not exist" });
+      return res.status(401).json({status:false, message: "User does not exist" });
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -51,23 +55,26 @@ export const googleLogin = async (req, res) => {
       existingUser.password
     );
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Incorrect password" });
+      return res.status(400).json({status:false , message: "Incorrect password" });
     }
 
     const data = {
       user: {
           id: existingUser._id,
-          email: existingUser.email
       }
   };
     const token = jwt.sign(
       data,
       process.env.JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: 3 * 24 * 60 * 60 }
     );
-
-    res.status(200).json({ user: { name: existingUser.name }, token });
+    res.cookie("token", token, {
+      withCredentials: true,
+      httpOnly: false,
+    });
+    res.status(201).json({ status: true , msg: "User created Successfully" });
   } catch (error) {
     console.log(error);
+    res.status(501).json({ status: false , msg: "Internal server issue" });
   }
 };

@@ -95,6 +95,7 @@ const Navbar = () => {
             </Link>
             {user ? (
               <Link to="/profile">
+                <div className="group relative">
                 {user?.image ? (
                   <img
                     src={user?.image}
@@ -104,6 +105,7 @@ const Navbar = () => {
                 ) : (
                   <FaCircleUser className="rounded-full w-8 h-8 border border-white" />
                 )}
+                </div>
               </Link>
             ) : (
               <Link to="/login">

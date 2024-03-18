@@ -2,24 +2,23 @@ import { useDispatch } from "react-redux";
 import { userData } from "../api";
 import { setUser } from "../store/slice/userSlice";
 import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
-const useUserDeatil = (token) => {
+const useUserDeatil = () => {
+    const [cookies] = useCookies([]);
     const dispatch = useDispatch();
+    // console.log(cookies.token)
     const data = async () => {
-        try {
-            if(token){
-                const data = await userData(token)
-                dispatch(setUser(data?.data))
-            }
-        } catch (error) {
-            console.log(error)
+        if (cookies) {
+            const data = await userData()
+            dispatch(setUser(data?.data))
         }
     }
 
 
     useEffect(() => {
         data()
-    },[token])
+    }, [cookies])
 }
 
 

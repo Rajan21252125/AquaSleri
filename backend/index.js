@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import UserRoute from './Routes/UserRoute.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 dotenvConfig();
 
@@ -18,8 +19,13 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+
+app.use(cookieParser());
+
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
