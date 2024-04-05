@@ -113,6 +113,7 @@ export const updateUserDetail = async (req, res) => {
     try {
         const userId = req.user.user.id;
         const { fullName, password, image } = req.body;
+        console.log(req.body)
 
         // Validate input data
         if (!fullName && !password && !image) {

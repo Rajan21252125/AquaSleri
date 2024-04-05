@@ -4,6 +4,7 @@ import { config as dotenvConfig } from 'dotenv';
 import UserRoute from './Routes/UserRoute.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import ProductRoute from './Routes/ProductRoute.js';
 
 dotenvConfig();
 
@@ -31,6 +32,7 @@ app.use(cors({
 
 // route for user login 
 app.use('/api/users', UserRoute);
+app.use('/api/admin', ProductRoute);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI)

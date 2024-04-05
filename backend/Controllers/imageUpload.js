@@ -20,10 +20,8 @@ export const uploadImage = async (req, res, next) => {
     // If the image doesn't exist in the database, upload it to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
     // Return Cloudinary response containing image URL
+    console.log(result)
     res.json({ imageUrl: result.secure_url });
-
-    // Save the Cloudinary image URL to the database
-    await User.create({ image: result.secure_url });
   } catch (error) {
     // Handle Cloudinary upload error
     console.error('Error uploading image to Cloudinary:', error);

@@ -39,7 +39,7 @@ route.post('/auth/userDetail', auth, getUserDetail)
 
 
 // upload a image
-route.post('/upload', auth , upload.single('image') ,uploadImage);
+route.post('/upload' , upload.single('image') ,uploadImage);
 
 
 

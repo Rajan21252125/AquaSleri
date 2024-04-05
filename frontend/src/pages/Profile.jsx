@@ -28,7 +28,7 @@ const Profile = () => {
   // State for form inputs
   const [formData, setFormData] = useState({
     email: user?.email,
-    username: user?.fullName || "",
+    fullName: user?.fullName || "",
     password: "",
     image: user?.image || "",
   });
@@ -52,6 +52,7 @@ const Profile = () => {
     if(imageError) return
     await uploadImg();
     try {
+      console.log(formData)
       const reponse = await updateUser(formData)
       setLoading(false);
       toast.success(reponse.data.msg);
@@ -159,7 +160,7 @@ const Profile = () => {
                 }}
               />
           </div>
-          {/* Username field */}
+          {/* fullName field */}
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
               Email Id:
@@ -179,8 +180,8 @@ const Profile = () => {
             <input
               className="border rounded-md px-4 py-2 w-full"
               type="text"
-              name="username"
-              value={formData.username}
+              name="fullName"
+              value={formData.fullName}
               onChange={handleChange}
             />
           </div>
@@ -212,7 +213,6 @@ const Profile = () => {
         <button
           className="bg-red-500 text-white w-full cursor-pointer py-2 px-4 rounded-md hover:bg-red-600"
           onClick={toggleLogout}
-          disabled={typeOfUser ? true : false}
         >
           Logout
         </button>
