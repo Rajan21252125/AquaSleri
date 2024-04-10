@@ -21,7 +21,6 @@ const Profile = () => {
   const [show , setShow ] = useState(false);
   const [ loading , setLoading ] = useState(false);
   const [ imageError , setImageError ] = useState(false);
-  const typeOfUser = useSelector((state) => state.userDetail.googleUser);
 
 
 
@@ -49,10 +48,9 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if(imageError) return
     await uploadImg();
+    if(imageError) return
     try {
-      console.log(formData)
       const reponse = await updateUser(formData)
       setLoading(false);
       toast.success(reponse.data.msg);
@@ -101,7 +99,6 @@ const Profile = () => {
         return;
       }
       setFormData({ ...formData, image: response.data.imageUrl })
-      console.log(response.data.imageUrl)
       setImageError(false);
     } catch (error) {
       if (error?.response?.status === 400) return
@@ -111,6 +108,8 @@ const Profile = () => {
 
   }
 
+
+  const typeOfUser = localStorage.getItem("typeOfUser");
 
   return (
     <div>

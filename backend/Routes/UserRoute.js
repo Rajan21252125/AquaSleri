@@ -5,6 +5,7 @@ import { googleLogin, googleSignUp } from '../Controllers/googleAuth.js';
 import auth from '../Middleware/auth.js';
 import { uploadImage } from '../Controllers/imageUpload.js';
 import upload from '../Middleware/multer.js';
+import { getProductById } from '../Controllers/product.js';
 
 const route = express.Router();
 
@@ -45,6 +46,11 @@ route.post('/upload' , upload.single('image') ,uploadImage);
 
 // update user
 route.put('/updateUser', auth, updateUserDetail);
+
+
+
+// to get a product by ID
+route.get("/product/:id", getProductById);
 
 
 

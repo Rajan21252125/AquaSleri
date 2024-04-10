@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Navbar from "../components/Navbar";
@@ -5,8 +6,6 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { signUp, login, googleLogin, googleSignup } from "../api/index";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { typeofUser } from "../store/slice/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const Login = () => {
     password: "",
     fullName: "",
   });
-  const dispatch = useDispatch();
 
   const toggleSignupForm = () => {
     setToggleSignup(!toggleSignup);
@@ -33,7 +31,7 @@ const Login = () => {
         const { data } = await googleSignup(res.credential);
         navigate("/");
         toast.success();
-        dispatch(typeofUser(true))
+        localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
         toast.error("Error creating account");
@@ -43,7 +41,7 @@ const Login = () => {
         const { data } = await googleLogin(res.credential);
         navigate("/");
         toast.success("Logged in successfully");
-        dispatch(typeofUser(true))
+        localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
         toast.error("Error logging in");
@@ -67,12 +65,12 @@ const Login = () => {
         const { data } = await signUp(formData);
         navigate("/");
         toast.success(data?.msg);
-        dispatch(typeofUser(false))
+        localStorage.setItem("typeOfUser", false);
       } else {
         const { data } = await login(formData);
         navigate("/");
         toast.success(data?.msg);
-        dispatch(typeofUser(false))
+        localStorage.setItem("typeOfUser", false);
       }
     } catch (error) {
       console.log(error?.response?.data?.msg);

@@ -12,13 +12,13 @@ export const userId = (id) => API.get(`/users/${id}`);
 export const userData = () => API.post(`/users/auth/userDetail`,{}, { withCredentials: true });
 export const uploadImage = (data) => API.post(`/users/upload`, data ,{ withCredentials: true });
 export const updateUser = (data) => API.put(`/users/updateUser`, data ,{ withCredentials: true });
+export const getProductById = (id) => API.get(`/users/product/${id}`);
 
-  
-// Authorization
-// API.interceptors.request.use((req) => {
-//   if (localStorage.getItem("id")) {
-//     const token = JSON.parse(localStorage.getItem("id"));
-//     req.headers.authorization = `Bearer ${token}`;
-//   }
-//   return req;
-// });
+
+
+
+export const addProduct = (data) => API.post('/admin/add' , data )
+export const addMultiImage = (data) => API.post('/admin/multiImage' , data )
+export const getProductList = () => API.get('/admin/view')
+export const deleteProduct = (id) => API.delete('/admin/delete/' + id)
+export const updateProduct = (data,id) => API.put('/admin/update/'+id , data)

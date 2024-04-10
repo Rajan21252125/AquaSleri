@@ -20,6 +20,7 @@
     "react-passport": "^1.1.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.2",
+    "react-select": "^5.8.0",
     "react-toastify": "^10.0.4",
     "react-transition-group": "^4.4.5",
     "tslib": "^2.6.2"
