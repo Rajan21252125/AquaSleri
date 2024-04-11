@@ -3,6 +3,7 @@ const API = axios.create({ baseURL: import.meta.env.VITE_BACKEND_URL });
 
 
 
+
 export const signUp = (formData) => API.post(`/users/signup`, formData , { withCredentials: true });
 export const login = (formData) => API.post(`/users/login`, formData , { withCredentials: true });
 export const logout = () => API.get(`/users/logout`, { withCredentials: true });
