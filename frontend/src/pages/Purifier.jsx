@@ -10,9 +10,9 @@ const Purifier = ({filteredProducts,title}) => {
   return (
     <div>
       <Navbar />
-      <div className="mx-60 my-10">
+      <div className="mx-10 lg:mx-40 xl:mx-60 my-10">
         <h1 className="text-3xl font-bold my-4 text-center">{title}</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           {filteredProducts?.map((product) => (
             <div key={product?._id} className="bg-white shadow-lg rounded-lg overflow-hidden mt-4">
               <img src={product?.images[0]} alt="product" className="w-full h-56 object-cover object-center" />

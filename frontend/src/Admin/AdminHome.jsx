@@ -61,7 +61,7 @@ const AdminHome = () => {
             </thead>
             <tbody>
               {products && products.map((product, index) => (
-                <tr key={product.id} className="border-b-2">
+                <tr key={product?._id} className="border-b-2">
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2 flex w-40 overflow-x-scroll no-scrollbar">
                     {product?.images?.map((img, idx) => (

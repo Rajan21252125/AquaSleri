@@ -16,10 +16,13 @@ import { PiSquaresFour } from "react-icons/pi";
 import { GrNotes } from "react-icons/gr";
 import useUserDeatil from "../customHook/useUserDeatil";
 import { useSelector } from "react-redux";
+import useGetProduct from "../customHook/useGetProduct";
+
 
 const Navbar = () => {
   const token = localStorage.getItem("id");
   useUserDeatil(token);
+  useGetProduct();
   const { user } = useSelector((state) => state.userDetail);
   const [search, setSearch] = useState(false);
   const searchRef = useRef(null);

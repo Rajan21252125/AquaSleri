@@ -28,7 +28,7 @@ const DetailProductPage = () => {
     return (
         <div className="container mx-auto">
             <Navbar />
-            <div className="mt-8 mx-60">
+            <div className="mt-8 mx-10 lg:mx-40 xl:mx-60">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-center">
                         <img src={product?.images[currentImageIndex]} alt={product?.name} className="w-96 h-96 object-contain" />
@@ -38,7 +38,7 @@ const DetailProductPage = () => {
                             ))}
                         </div>
                     </div>
-                    <div className='mt-4 w-1/2 text-center'>
+                    <div className='mt-4 xl:w-1/2 text-center'>
                         <h1 className="text-3xl font-bold mb-4">{product?.name}</h1>
                         <p className="text-lg mb-4">{product?.description}</p>
                         <div className="flex flex-col space-y-4 justify-between items-center mb-4">
