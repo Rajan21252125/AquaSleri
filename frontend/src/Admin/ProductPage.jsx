@@ -3,6 +3,8 @@ import AdminNavbar from "./AdminNavbar";
 import { addMultiImage, addProduct } from "../api";
 import { toast } from "react-toastify";
 import Select from 'react-select';
+import AdminFooter from "./AdminFooter";
+import { MdDelete } from "react-icons/md";
 
 const AddProductPage = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,7 @@ const AddProductPage = () => {
     { value: 'Water Purifier', label: 'Water Purifier' },
     { value: 'Water Solution', label: 'Water Solution' },
     { value: 'New Arrival', label: 'New Arrival' },
+    { value: 'Service', label: 'Service' },
   ];
 
   const handleChange = (selectedOptions) => {
@@ -40,18 +43,32 @@ const AddProductPage = () => {
   
   const handleFileChange = (e) => {
     const { name, files } = e.target;
+    if (name !== "images") return;
     if (name === "images") {
       const fileArray = Array.from(files);
-      if (formData.images.length + fileArray.length > 5) {
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      const selectedFiles = fileArray.filter((file) =>
+        allowedTypes.includes(file.type)
+      );
+  
+      if (selectedFiles.length !== fileArray.length) {
+        toast.error("Please upload only JPG, JPEG, or PNG files");
+        return;
+      }
+  
+      if (formData.images.length + selectedFiles.length > 5) {
         toast.error("You can only upload up to 5 images");
         return;
       }
+  
       setFormData({
         ...formData,
-        images: [...formData.images, ...fileArray.slice(0, 5 - formData.images.length)],
+        images: [...formData.images, ...selectedFiles.slice(0, 5 - formData.images.length)],
       });
     }
   };
+  
+  
   
 
   const handleSubmit = async (e) => {
@@ -117,6 +134,7 @@ const AddProductPage = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
+    console.log(formData)
     try {
       const data = await addMultiImage(formData);
       return data.data;
@@ -125,10 +143,16 @@ const AddProductPage = () => {
     }
   };
 
+
+  const handleDeleteImage = (index) => {
+    const newImages = formData.images.filter((image, idx) => idx !== index);
+    setFormData({ ...formData, images: newImages });
+  };
+
   return (
     <>
       <AdminNavbar />
-      <div className="mx-4 md:mx-12 lg:mx-24 xl:mx-36 mt-8">
+      <div className="mx-4 md:mx-12 lg:mx-24 xl:mx-36 my-12">
         <h1 className="text-3xl font-bold my-4 text-center">Add New Product</h1>
         <form
           onSubmit={handleSubmit}
@@ -197,7 +221,7 @@ const AddProductPage = () => {
                 id="images"
                 name="images"
                 onChange={handleFileChange}
-                accept="image"
+                accept="image/*"
                 multiple
                 className="w-full px-3 py-2 border rounded-md"
                 disabled={formData.images.length === 5}
@@ -208,12 +232,17 @@ const AddProductPage = () => {
               )}
               <div className="flex flex-wrap">
                 {formData.images.map((image, index) => (
+                  <div key={index} className="relative">
+                  <MdDelete
+                    className="absolute top-3 right-3 text-red-700 cursor-pointer bg-white rounded-md"
+                    onClick={() => handleDeleteImage(index)}
+                  />
                   <img
-                    key={index}
                     src={URL.createObjectURL(image)}
                     alt={`Preview ${index + 1}`}
                     className="mt-2 mr-2 w-24 h-24 object-cover"
                   />
+                  </div>
                 ))}
               </div>
             </div>
@@ -264,6 +293,7 @@ const AddProductPage = () => {
           </button>
         </form>
       </div>
+      <AdminFooter />
     </>
   );
 };

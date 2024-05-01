@@ -3,14 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import { removeUser } from "../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
-import { FaRegEye , FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { logout, updateUser, uploadImage } from "../api";
 import { toast } from "react-toastify";
-
-
-
-
-
 
 const Profile = () => {
   const { user } = useSelector((state) => state.userDetail);
@@ -18,16 +13,15 @@ const Profile = () => {
   const navigate = useNavigate();
   const [dragging, setDragging] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
-  const [show , setShow ] = useState(false);
-  const [ loading , setLoading ] = useState(false);
-  const [ imageError , setImageError ] = useState(false);
-
-
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   // State for form inputs
   const [formData, setFormData] = useState({
     email: user?.email,
     fullName: user?.fullName || "",
+    phoneNumber: user?.phoneNumber || "",
     password: "",
     image: user?.image || "",
   });
@@ -37,7 +31,6 @@ const Profile = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   // Function to toggle show password
   const toggleShowPassword = () => {
@@ -49,25 +42,34 @@ const Profile = () => {
     e.preventDefault();
     setLoading(true);
     await uploadImg();
-    if(imageError) return
+    if (imageError) return;
     try {
-      const reponse = await updateUser(formData)
+      const reponse = await updateUser(formData);
       setLoading(false);
       toast.success(reponse.data.msg);
-      setFormData({fullName: user?.fullName, password: "", image: user?.image});
-      navigate("/")
+      setFormData({
+        fullName: user?.fullName,
+        password: "",
+        image: user?.image,
+      });
+      navigate("/");
     } catch (error) {
       toast.error(error?.response?.data?.msg);
-      setLoading(false)
+      setLoading(false);
     }
     setLoading(false);
   };
 
   // Logout function
   const toggleLogout = () => {
-    logout()
-    dispatch(removeUser());
-    navigate("/");
+    try {
+      logout();
+      dispatch(removeUser());
+      navigate("/");
+      toast.success("Logged out successfully");
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+    }
   };
 
   // Drag and drop image
@@ -87,7 +89,6 @@ const Profile = () => {
     setDragging(false);
   };
 
-
   const uploadImg = async () => {
     const data = new FormData();
     data.append("image", formData.image);
@@ -98,16 +99,14 @@ const Profile = () => {
         setImageError(true);
         return;
       }
-      setFormData({ ...formData, image: response.data.imageUrl })
+      setFormData({ ...formData, image: response.data.imageUrl });
       setImageError(false);
     } catch (error) {
-      if (error?.response?.status === 400) return
-      toast.error(error?.response?.data?.msg)
+      if (error?.response?.status === 400) return;
+      toast.error(error?.response?.data?.msg);
       setImageError(true);
     }
-
-  }
-
+  };
 
   const typeOfUser = localStorage.getItem("typeOfUser");
 
@@ -118,9 +117,7 @@ const Profile = () => {
         {/* Edit profile form */}
         <form onSubmit={handleSubmit}>
           {/* Image upload */}
-            <label className="block text-gray-700 font-bold mb-2">
-              Image:
-            </label>
+          <label className="block text-gray-700 font-bold mb-2">Image:</label>
           <div
             className={`mb-4 rounded-full h-48 w-full flex flex-col justify-center items-center cursor-pointer ${
               dragging ? "bg-gray-100" : ""
@@ -136,28 +133,28 @@ const Profile = () => {
                 className="w-36 h-36 object-cover rounded-full"
               />
             ) : user?.image ? (
-                <img
+              <img
                 src={user?.image}
                 alt="Preview"
                 className="w-36 h-36 object-cover rounded-full"
               />
-            ) :  dragging ? (
+            ) : dragging ? (
               <span>Drop image</span>
             ) : (
               <span>Upload Image</span>
             )}
             <input
-                className=""
-                type="file"
-                id="imageUpload"
-                accept="image/*"
-                name="image"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  setPreviewImage(URL.createObjectURL(file));
-                  setFormData({ ...formData, image: file });
-                }}
-              />
+              className=""
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              name="image"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setPreviewImage(URL.createObjectURL(file));
+                setFormData({ ...formData, image: file });
+              }}
+            />
           </div>
           {/* fullName field */}
           <div className="mb-4">
@@ -169,7 +166,7 @@ const Profile = () => {
               type="text"
               name="email"
               value={formData.email}
-              readOnly  
+              readOnly
             />
           </div>
           <div className="mb-4">
@@ -184,20 +181,42 @@ const Profile = () => {
               onChange={handleChange}
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Phone Number:
+            </label>
+            <input
+              className="text-sm w-full px-4 mt-4 py-2 border border-solid border-gray-300 rounded"
+              type="tel"
+              placeholder="Phone Number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              pattern="[0-9]{10}"
+              inputMode="numeric"
+            />
+          </div>
           {/* Password field */}
           <div className="mb-4 relative">
             <label className="block text-gray-700 font-bold mb-2">
               Password:
             </label>
             <input
-              className={`border rounded-md px-4 py-2 w-full ${typeOfUser ? "cursor-not-allowed" : "" }`}
+              className={`border rounded-md px-4 py-2 w-full ${
+                typeOfUser ? "cursor-not-allowed" : ""
+              }`}
               type={show ? "text" : "password"}
               disabled={typeOfUser ? true : false}
               name="password"
               value={formData.password}
-              onChange={!typeOfUser ? handleChange : null }
+              onChange={!typeOfUser ? handleChange : null}
             />
-            <span className="absolute right-4 top-10 cursor-pointer text-2xl" onClick={toggleShowPassword}>{show ? <FaRegEye /> : <FaRegEyeSlash /> }</span>
+            <span
+              className="absolute right-4 top-10 cursor-pointer text-2xl"
+              onClick={toggleShowPassword}
+            >
+              {show ? <FaRegEye /> : <FaRegEyeSlash />}
+            </span>
           </div>
           {/* Submit button */}
           <button
@@ -207,15 +226,15 @@ const Profile = () => {
             {loading ? "Loading...." : "Save Changes"}
           </button>
         </form>
-      {/* Logout button */}
-      <div className="my-2 mb-14">
-        <button
-          className="bg-red-500 text-white w-full cursor-pointer py-2 px-4 rounded-md hover:bg-red-600"
-          onClick={toggleLogout}
-        >
-          Logout
-        </button>
-      </div>
+        {/* Logout button */}
+        <div className="my-2 mb-14">
+          <button
+            className="bg-red-500 text-white w-full cursor-pointer py-2 px-4 rounded-md hover:bg-red-600"
+            onClick={toggleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

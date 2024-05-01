@@ -7,7 +7,6 @@ import { useCookies } from "react-cookie";
 const useUserDeatil = () => {
     const [cookies] = useCookies([]);
     const dispatch = useDispatch();
-    // console.log(cookies.token)
     const data = async () => {
         if (cookies) {
             const data = await userData()

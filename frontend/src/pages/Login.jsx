@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Navbar from "../components/Navbar";
 import { GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUp, login, googleLogin, googleSignup } from "../api/index";
 import { toast } from "react-toastify";
 
@@ -15,6 +15,7 @@ const Login = () => {
     email: "",
     password: "",
     fullName: "",
+    phoneNumber: "",
   });
 
   const toggleSignupForm = () => {
@@ -63,11 +64,12 @@ const Login = () => {
     try {
       if (toggleSignup) {
         const { data } = await signUp(formData);
-        navigate("/");
+        navigate("/login");
         toast.success(data?.msg);
         localStorage.setItem("typeOfUser", false);
       } else {
         const { data } = await login(formData);
+        if (data?.isVerified === false) return toast.error("Please verify your email");
         navigate("/");
         toast.success(data?.msg);
         localStorage.setItem("typeOfUser", false);
@@ -126,6 +128,16 @@ const Login = () => {
                     value={formData.fullName}
                     onChange={handleChange}
                   />
+                  <input
+                    className="text-sm w-full px-4 mt-4 py-2 border border-solid border-gray-300 rounded"
+                    type="tel"
+                    placeholder="Phone Number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    pattern="[0-9]{10}"
+                    inputMode="numeric"
+                  />
                 </div>
               )}
             </div>
@@ -156,12 +168,11 @@ const Login = () => {
                 <span>Show Password</span>
               </label>
               {!toggleSignup && (
-                <a
-                  className="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4"
-                  href="#"
+                <Link to={"/forgot-password"}
+                  className="text-blue-600 hover:text-blue-700 cursor-pointer hover:underline hover:underline-offset-4"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               )}
             </div>
             <div className="text-center md:text-left">

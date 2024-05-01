@@ -1,6 +1,6 @@
 import express from 'express';
 import { validateSignup , validateLogin } from '../Middleware/validation.js';
-import { login, signup, getAllUser, getUserDetail, updateUserDetail, userLogout } from '../Controllers/user.js';
+import { login, signup, getAllUser, getUserDetail, updateUserDetail, userLogout, activationAccount, resendVerification } from '../Controllers/user.js';
 import { googleLogin, googleSignUp } from '../Controllers/googleAuth.js';
 import auth from '../Middleware/auth.js';
 import { uploadImage } from '../Controllers/imageUpload.js';
@@ -51,6 +51,18 @@ route.put('/updateUser', auth, updateUserDetail);
 
 // to get a product by ID
 route.get("/product/:id", getProductById);
+
+
+
+
+
+// activate user
+route.get('/activate/:token', activationAccount);
+
+
+
+// resend email verification
+route.post('/resend-verification', resendVerification)
 
 
 

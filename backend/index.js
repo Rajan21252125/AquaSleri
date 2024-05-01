@@ -5,6 +5,10 @@ import UserRoute from './Routes/UserRoute.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import ProductRoute from './Routes/ProductRoute.js';
+import CartRoutes from './Routes/CartRoutes.js';
+import feedBackRoute from './Routes/feedBackRoute.js';
+import cron from 'node-cron';
+import User from './Schema/UserSchema.js';
 
 dotenvConfig();
 
@@ -20,12 +24,10 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-
 app.use(cookieParser());
 
-
 app.use(cors({
-    origin: ["http://localhost:5173","https://aqua-sleri.vercel.app"],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -33,11 +35,37 @@ app.use(cors({
 // route for user login 
 app.use('/api/users', UserRoute);
 app.use('/api/admin', ProductRoute);
+app.use('/api/cart', CartRoutes);
+app.use('/api/feedback', feedBackRoute);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log("Connected to MongoDB");
+        // Define a cron job
+        cron.schedule('0 0 * * *', async () => {
+            try {
+                const fiveDaysAgo = new Date();
+                fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+
+                // Find users who have not been verified and were created more than 5 days ago
+                const usersToRemove = await User.find({
+                    verified: false,
+                    createdAt: { $lte: fiveDaysAgo }
+                });
+
+                // Remove users
+                await User.deleteMany({
+                    verified: false,
+                    createdAt: { $lte: fiveDaysAgo }
+                });
+
+                console.log(`Removed ${usersToRemove.length} users who were not verified within 5 days.`);
+            } catch (error) {
+                console.error('Error removing users:', error);
+            }
+        });
+
         // Start the server after successfully connecting to MongoDB
         app.listen(PORT, () => {
             console.log(`Server is running on port http://localhost:${PORT}`);

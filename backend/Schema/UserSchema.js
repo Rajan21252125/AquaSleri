@@ -12,6 +12,10 @@ const userSchema = new Schema({
     required: true,
     unique: true
   },
+  phoneNumber: {
+    type: Number,
+    unique: true,
+  },
   password: {
     type: String,
   },
@@ -22,7 +26,37 @@ const userSchema = new Schema({
   createdAt : {
     type: Date,
     default: new Date()
-  }
+  },
+  addresses:[
+    {
+      country: {
+        type: String,
+      },
+      city:{
+        type: String,
+      },
+      address1:{
+        type: String,
+      },
+      address2:{
+        type: String,
+      },
+      zipCode:{
+        type: Number,
+      },
+      addressType:{
+        type: String,
+      },
+    }
+  ],
+  isVerified : {
+    type: Boolean,
+    default: false
+  },
+  role:{
+    type: String,
+    default: "user",
+  },
 });
 
 const User = model('User', userSchema);

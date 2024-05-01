@@ -1,5 +1,5 @@
 import express from "express";
-import { addProduct, addProductImage, deleteProduct, updateProduct, viewProduct } from "../Controllers/product.js";
+import { addProduct, addProductImage, deleteImage, deleteProduct, updateProduct, viewProduct } from "../Controllers/product.js";
 import { multiImageUpload } from "../Controllers/multiImageUpload.js";
 import upload from "../Middleware/multer.js";
 
@@ -41,6 +41,12 @@ route.delete("/delete/:id", deleteProduct);
 
 // to upload multiple images
 route.post("/multiImage", upload.array('images'), multiImageUpload);
+
+
+
+
+route.delete("/deleteImage/:id", deleteImage);
+
 
 
 
