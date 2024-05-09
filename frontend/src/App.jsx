@@ -30,8 +30,8 @@ const App = () => {
 
   const isOnline = useGetOfflineStatus();
 
-  const data = useSelector((state) => state.product.products);
-  const purifier = data.filter((product) =>
+  const data = useSelector((state) => state.product?.products);
+  const purifier = data && data.filter((product) =>
     product.category.includes("Water Purifier")
   );
   const solution = data.filter((product) =>
