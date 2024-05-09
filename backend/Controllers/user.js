@@ -222,7 +222,7 @@ export const getUserDetail = async (req,res) => {
 export const updateUserDetail = async (req, res) => {
     try {
         const userId = req.user.user.id;
-        const { fullName, password, image } = req.body;
+        const { fullName, password, image , phoneNumber } = req.body;
 
         // Validate input data
         if (!fullName && !password && !image) {
@@ -239,6 +239,9 @@ export const updateUserDetail = async (req, res) => {
         }
         if (image) {
             updateFields.image = image;
+        }
+        if (phoneNumber) {
+            updateFields.phoneNumber = phoneNumber;
         }
 
         // Find the user by ID and update the fields

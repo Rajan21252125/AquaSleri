@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
-import { Link  } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/slice/cartSlice";
 import { toast } from "react-toastify";
 
 const Purifier = ({ filteredProducts, title }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useSelector((state) => state.userDetail);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const indexOfLastProduct = currentPage * 10;
   const indexOfFirstProduct = indexOfLastProduct - 10;
@@ -27,6 +29,11 @@ const Purifier = ({ filteredProducts, title }) => {
   };
 
   const handleCart = async (product) => {
+    if(!user?._id){
+      toast.error("Please login first");
+      navigate("/login")
+      return;
+    }
     dispatch(addToCart(product))
     toast.success("Product added to cart");
 };

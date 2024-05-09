@@ -15,11 +15,12 @@ const Cart = ({ setOpenCart }) => {
   const dispatch = useDispatch();
 
   const removeFromCartHandler = (data) => {
+    console.log(data)
     dispatch(removeFromCart(data));
   };
 
   const totalPrice = cart?.reduce((acc, item) => {
-    return acc + (value * item?.discountedPrice);
+    return acc + (item?.quantity * item?.discountedPrice);
 }, 0);
 
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -11,6 +11,8 @@ const DetailProductPage = () => {
     const product = useSelector(state => state.product.products.find(product => product?._id === id));
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.userDetail);
+  const navigate = useNavigate();
 
 
     const changeImage = (index) => {
@@ -19,6 +21,11 @@ const DetailProductPage = () => {
 
 
     const handleCart = async (product) => {
+        if(!user?._id){
+          toast.error("Please login first");
+          navigate("/login")
+          return;
+        }
         dispatch(addToCart(product))
         toast.success("Product added to cart");
     };

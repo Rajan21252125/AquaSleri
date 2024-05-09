@@ -12,6 +12,7 @@ import PaymentPage from "./pages/PaymentPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import ViewForm from "./Admin/ViewForm";
 import ActivationPage from "./pages/ActivationPage";
+import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
@@ -61,11 +62,11 @@ const App = () => {
               element={<Purifier filteredProducts={newArrival} title={"New Arrival"} />}
             />
             <Route path="/amc" element={<Amc />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/checkout" element={<UserProtectedRoute><CheckoutPage /></UserProtectedRoute>} />
+            <Route path="/payment" element={<UserProtectedRoute><PaymentPage /></UserProtectedRoute>} />
+            <Route path="/profile" element={<UserProtectedRoute><Profile /></UserProtectedRoute>} />
             <Route path="/product/:id" element={<DetailProductPage />} />
-            <Route path="/order/success" element={<OrderSuccessPage />} />
+            <Route path="/order/success" element={<UserProtectedRoute><OrderSuccessPage /></UserProtectedRoute>} />
             <Route path="/activation/:activation_token" element={<ActivationPage />}
         />
             <Route path="*" element={<Error />} />

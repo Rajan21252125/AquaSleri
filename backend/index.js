@@ -75,6 +75,12 @@ mongoose.connect(MONGODB_URI)
         console.error("Error connecting to MongoDB:", error);
     });
 
+
+
+app.get("/", (req,res) => {
+    res.send("Hello World");
+})
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);

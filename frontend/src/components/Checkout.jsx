@@ -59,11 +59,11 @@ const Checkout = () => {
   };
 
   const subTotalPrice = cart?.reduce((acc, item) => {
-    return acc + (item?.quantity ? item?.quantity : 1 * item.discountedPrice);
+    return acc + (item?.quantity * item?.discountedPrice);
 }, 0);
 
   // this is shipping cost variable
-  const shipping = subTotalPrice * 0.1;
+  const shipping = 100;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
