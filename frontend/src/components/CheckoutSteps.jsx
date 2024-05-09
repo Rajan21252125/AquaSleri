@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import styles from '../styles/styles';
 
 const CheckoutSteps = ({active}) => {
