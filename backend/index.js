@@ -29,7 +29,8 @@ app.use(cookieParser());
 app.use(cors({
     origin: ["http://localhost:5173","https://aquasleri-production.up.railway.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    credentials: true,
+    exposedHeaders: ["Set-Cookie"]
 }));
 
 // route for user login 

@@ -12,7 +12,6 @@ const useGetProduct = () => {
         try {
             if (productData.length > 0) return;
           const data = await getProductList();
-          console.log(data);
           dispatch(setProducts(data?.data));
           return data;
         } catch (error) {
