@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/slice/cartSlice";
 import { toast } from "react-toastify";
+import { addToCartApi } from "../api";
 
 const Purifier = ({ filteredProducts, title }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,6 +37,11 @@ const Purifier = ({ filteredProducts, title }) => {
     }
     dispatch(addToCart(product))
     toast.success("Product added to cart");
+    try {
+      const data = await addToCartApi(product)
+    } catch (error) {
+      toast.error(error?.response?.data?.msg)
+    }
 };
 
 

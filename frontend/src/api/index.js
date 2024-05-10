@@ -1,6 +1,5 @@
 import axios from "axios";
 const API = axios.create({ baseURL: import.meta.env.VITE_BACKEND_URL });
-console.log(API)
 
 
 
@@ -39,8 +38,7 @@ export const activateAccount = (token) => API.get('/users/activate/' + token);
 
 
 
-
 // cart
-export const addToCartApi = (user,cartItems) => API.post('/cart/add' , {user,cartItems} )
-export const viewCart = (id) => API.get('/cart/view/' + id);
-export const deleteCartItem = (data) => API.delete('/cart/delete' , { data } );
+export const addToCartApi = (cartItems) => API.post('/cart/add' , {cartItems} , { withCredentials: true } )
+export const viewCart = () => API.get('/cart/view', { withCredentials: true });
+export const deleteCartItem = (data) => API.delete('/cart/delete' , { data } , { withCredentials: true });

@@ -9,8 +9,8 @@ import CartSingle from "./CartSingle";
 import { useState } from "react";
 
 const Cart = ({ setOpenCart }) => {
+  const [value, setValue] = useState(1);
   const cart = useSelector((state) => state.cart.cartItems);
-  const [value] = useState(cart?.quantity ? cart?.quantity : 1);
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Cart = ({ setOpenCart }) => {
   };
 
   const totalPrice = cart?.reduce((acc, item) => {
-    return acc + (item?.quantity * item?.discountedPrice);
+    return acc + (value * item?.discountedPrice);
 }, 0);
 
 
@@ -29,7 +29,7 @@ const Cart = ({ setOpenCart }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
+    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-50">
       <div className="fixed top-0 right-0 h-full w-full md:w-[30%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {cart && cart.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
@@ -63,6 +63,9 @@ const Cart = ({ setOpenCart }) => {
               {/* cart Single Items */}
               <br />
               <div className="w-full border-t">
+                <div className="flex justify-end mx-5 mt-2">
+                <button className="flex items-center justify-center bg-gray-800 text-white font-semibold py-2 px-4 rounded-md">Clear Cart</button>
+                </div>
                 {cart &&
                   cart.map((i, index) => (
                     <CartSingle
@@ -70,6 +73,8 @@ const Cart = ({ setOpenCart }) => {
                       data={i}
                       quantityChangeHandler={quantityChangeHandler}
                       removeFromCartHandler={removeFromCartHandler}
+                      value={value}
+                      setValue={setValue}
                     />
                   ))}
               </div>
@@ -79,7 +84,7 @@ const Cart = ({ setOpenCart }) => {
               {/* checkout buttons */}
               <Link to="/checkout">
                 <div
-                  className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
+                  className={`h-[45px] flex items-center justify-center w-[100%] bg-gray-800 rounded-[5px]`}
                 >
                   <h1 className="text-[#fff] text-[18px] font-[600]">
                     Checkout Now (INR ₹{totalPrice})

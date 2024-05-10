@@ -3,30 +3,30 @@ import Cart from '../Schema/cart.js';
 
 export const addToCart = async (req, res) => {
     try {
-        const { user, cartItems } = req.body;
-        if (!user || !cartItems) {
-            return res.status(400).json({ status: false, msg: 'All fields are required' });
+        const user = req.user.user.id;
+        const product = req.body.cartItems;
+        console.log()
+        if (!user || !product) {
+            return res.status(400).json({ status: false, msg: 'Invalid request. Missing required fields.' });
         }
-        const cart = await Cart.findOne({ user });
-        if (cart) {
-            let items = cart.cartItems;
-            // Check if the cart already contains the same product
-            const existingItemIndex = items.findIndex(item => item.product === cartItems.product);
-            console.log(existingItemIndex)
-            if (existingItemIndex !== -1) {
-                // If the product already exists in the cart, update the quantity
-                items[existingItemIndex].quantity += cartItems.quantity;
-            } else {
-                // If the product is not in the cart, add it to the cartItems array
-                items.push(cartItems);
-            }
-            // Update the cart with the modified cartItems array
-            await Cart.updateOne({ user }, { cartItems: items });
-            return res.status(201).json({ status: true, msg: 'Product(s) added to cart successfully' });
-        } else {
-            await Cart.create({ user, cartItems });
-            return res.status(201).json({ status: true, msg: 'Product(s) added to cart successfully' });
+
+        // Retrieve the user's cart
+        let cart = await Cart.findOne({ user });
+
+        // If the user doesn't have a cart yet, create a new one
+        if (!cart) {
+            cart = await Cart.create({ user, cartItems: [] });
         }
+
+        // Check if the product already exists in the cart
+        const existingItemIndex = cart.cartItems.findIndex((cartItem) => cartItem._id === product._id);
+
+        if (existingItemIndex === -1) {
+            cart.cartItems.push(product);
+        }
+        await cart.save();
+
+        return res.status(201).json({ status: true, msg: 'Product added to cart successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ status: false, msg: 'Internal Server Error' });
@@ -35,13 +35,9 @@ export const addToCart = async (req, res) => {
 
 
 
-
-
-
-
 export const viewCart = async (req, res) => {
     try {
-        const user = req.params.id;
+        const user = req.user.user.id;
         if (!user) {
             return res.status(400).json({ status: false, msg: 'User ID is required' });
         }
@@ -60,7 +56,8 @@ export const viewCart = async (req, res) => {
 
 export const deleteCartItem = async (req, res) => {
     try {
-        const { user, product } = req.body;
+        const user = req.user.user.id;
+        const { product } = req.body;
         if (!user || !product) {
             return res.status(400).json({ status: false, msg: 'All fields are required' });
         }

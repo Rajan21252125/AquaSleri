@@ -1,41 +1,72 @@
-import styles from '../styles/styles';
+/* eslint-disable react/prop-types */
+import styles from "../styles/styles";
 
-const CheckoutSteps = ({active}) => {
+const CheckoutSteps = ({ active }) => {
   return (
-    <div className='w-full flex justify-center'>
-        <div className="w-[90%] 800px:w-[50%] flex items-center flex-wrap">
-               <div className={`${styles.noramlFlex}`}>
-                <div className={`${styles.cart_button}`}>
-                       <span className={`${styles.cart_button_text}`}>1.Shipping</span>
-                </div>
-                <div className={`${
-                    active > 1 ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                    : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-                }`} />
-               </div>
-
-               <div className={`${styles.noramlFlex}`}>
-                <div className={`${active > 1 ? `${styles.cart_button}` : `${styles.cart_button} !bg-[#FDE1E6]`}`}>
-                    <span className={`${active > 1 ? `${styles.cart_button_text}` : `${styles.cart_button_text} !text-[#f63b60]`}`}>
-                        2.Payment
-                    </span>
-                </div>
-               </div>
-
-               <div className={`${styles.noramlFlex}`}>
-               <div className={`${
-                    active > 3 ? "w-[30px] 800px:w-[70px] h-[4px] !bg-[#f63b60]"
-                    : "w-[30px] 800px:w-[70px] h-[4px] !bg-[#FDE1E6]"
-                }`} />
-                <div className={`${active > 2 ? `${styles.cart_button}` : `${styles.cart_button} !bg-[#FDE1E6]`}`}>
-                    <span className={`${active > 2 ? `${styles.cart_button_text}` : `${styles.cart_button_text} !text-[#f63b60]`}`}>
-                        3.Success
-                    </span>
-                </div>
-               </div>
+    <div className="w-full">
+      <div className="w-full flex items-center justify-center flex-wrap">
+        <div className={`${styles.noramlFlex}`}>
+          <div className={`${styles.cart_button}`}>
+            <span className={`${styles.cart_button_text}`}>1.Shipping</span>
+          </div>
+          <div
+            className={`${
+              active > 1
+                ? "w-[10px] md:w-[70px] h-[4px] bg-gray-800"
+                : "w-[10px] md:w-[70px] h-[4px] bg-gray-500"
+            }`}
+          />
         </div>
-    </div>
-  )
-}
 
-export default CheckoutSteps
+        <div className={`${styles.noramlFlex}`}>
+          <div
+            className={`${
+              active > 1
+                ? `${styles.cart_button}`
+                : `${styles.cart_button} !bg-gray-500`
+            }`}
+          >
+            <span
+              className={`${
+                active > 1
+                  ? `${styles.cart_button_text}`
+                  : `${styles.cart_button_text} !text-white`
+              }`}
+            >
+              2.Payment
+            </span>
+          </div>
+        </div>
+
+        <div className={`${styles.noramlFlex}`}>
+          <div
+            className={`${
+              active > 3
+                ? "w-[10px] md:w-[70px] h-[4px] !bg-gray-500"
+                : "w-[10px] md:w-[70px] h-[4px] bg-gray-500"
+            }`}
+          />
+          <div
+            className={`${
+              active > 2
+                ? `${styles.cart_button}`
+                : `${styles.cart_button} !bg-gray-500`
+            }`}
+          >
+            <span
+              className={`${
+                active > 2
+                  ? `${styles.cart_button_text}`
+                  : `${styles.cart_button_text} !text-white`
+              }`}
+            >
+              3.Success
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CheckoutSteps;
