@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { styles } from "../styles/styles";
+import styles from "../styles/Styles";
 
 const CheckoutSteps = ({ active }) => {
   return (
