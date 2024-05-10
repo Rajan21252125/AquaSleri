@@ -69,10 +69,6 @@ export const signup = async (req, res) => {
             console.log(error);
             return res.status(500).json({ status: false, msg: 'Internal Server Error' });
           }
-        // const data = { user: { id: newUser.id } };
-        // const token = JWT.sign(data, secretKey, { expiresIn: '3d' });
-        // res.cookie('token', token, { withCredentials: true, httpOnly: true });
-        // return res.status(201).json({ status: true, msg: 'Account created successfully.' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ status: false, msg: 'Internal Server Error' });

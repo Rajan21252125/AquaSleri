@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signUp, login, googleLogin, googleSignup } from "../api/index";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Login = ({token}) => {
   const navigate = useNavigate();
   const [toggleSignup, setToggleSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +31,8 @@ const Login = () => {
       try {
         const { data } = await googleSignup(res.credential);
         navigate("/");
-        toast.success();
+        toast.success("Login Successfully");
+        localStorage.setItem("token",data?.token)
         localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
@@ -42,6 +43,7 @@ const Login = () => {
         const { data } = await googleLogin(res.credential);
         navigate("/");
         toast.success("Logged in successfully");
+        localStorage.setItem("token",data?.token)
         localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
@@ -64,15 +66,17 @@ const Login = () => {
     try {
       if (toggleSignup) {
         const { data } = await signUp(formData);
+        localStorage.setItem("token",data?.token)
+        localStorage.setItem("typeOfUser", false);
         navigate("/login");
         toast.success(data?.msg);
-        localStorage.setItem("typeOfUser", false);
       } else {
         const { data } = await login(formData);
         if (data?.isVerified === false) return toast.error("Please verify your email");
+        localStorage.setItem("token",data?.token)
+        localStorage.setItem("typeOfUser", false);
         navigate("/");
         toast.success(data?.msg);
-        localStorage.setItem("typeOfUser", false);
       }
     } catch (error) {
       console.log(error?.response?.data?.msg);
