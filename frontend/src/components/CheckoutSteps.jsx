@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import styles from "../constant/styles";
+// import styles from "../constant/styles";
 
 const CheckoutSteps = ({ active }) => {
   return (
     <div className="w-full">
       <div className="w-full flex items-center justify-center flex-wrap">
-        <div className={`${styles.noramlFlex}`}>
-          <div className={`${styles.cart_button}`}>
-            <span className={`${styles.cart_button_text}`}>1.Shipping</span>
+        <div className="flex items-center">
+          <div className="px-[20px] h-[38px] rounded-[20px] bg-gray-800 flex items-center justify-center cursor-pointer">
+            <span className="text-[#fff] text-[16px] font-[600]">1.Shipping</span>
           </div>
           <div
             className={`${
@@ -18,27 +18,19 @@ const CheckoutSteps = ({ active }) => {
           />
         </div>
 
-        <div className={`${styles.noramlFlex}`}>
+        <div className="flex items-center">
           <div
-            className={`${
-              active > 1
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-gray-500`
-            }`}
+            className={`px-[20px] h-[38px] rounded-[20px] flex items-center justify-center cursor-pointer ${active > 1 ? "bg-gray-800" :  "!bg-gray-500"}`}
           >
             <span
-              className={`${
-                active > 1
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-white`
-              }`}
+              className={`text-[16px] font-[600] ${active > 1? "text-[#fff]": "!text-white"}`}
             >
               2.Payment
             </span>
           </div>
         </div>
 
-        <div className={`${styles.noramlFlex}`}>
+        <div className="flex items-center">
           <div
             className={`${
               active > 3
@@ -47,18 +39,10 @@ const CheckoutSteps = ({ active }) => {
             }`}
           />
           <div
-            className={`${
-              active > 2
-                ? `${styles.cart_button}`
-                : `${styles.cart_button} !bg-gray-500`
-            }`}
+            className={`px-[20px] h-[38px] rounded-[20px] flex items-center justify-center cursor-pointer ${active > 1 ? "bg-gray-800" :  "!bg-gray-500"}`}
           >
             <span
-              className={`${
-                active > 2
-                  ? `${styles.cart_button_text}`
-                  : `${styles.cart_button_text} !text-white`
-              }`}
+              className={`text-[16px] font-[600] ${active > 1? "text-[#fff]": "!text-white"}`}
             >
               3.Success
             </span>
