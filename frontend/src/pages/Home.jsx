@@ -15,7 +15,7 @@ const Home = () => {
           href="https://wa.me/919999999999"
           target="_blank"
           rel="noreferrer"
-          className="fixed bottom-10 right-5 z-50 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600"
+          className="fixed bottom-20 lg:bottom-10 right-5 z-50 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600"
         >
           <FaWhatsapp size={30} />
         </a>

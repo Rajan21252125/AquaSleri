@@ -23,6 +23,7 @@ const AddProductPage = () => {
     { value: 'Water Solution', label: 'Water Solution' },
     { value: 'New Arrival', label: 'New Arrival' },
     { value: 'Service', label: 'Service' },
+    { value: 'AMC', label: 'AMC' },
   ];
 
   const handleChange = (selectedOptions) => {

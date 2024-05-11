@@ -10,7 +10,7 @@ const route = express.Router();
 
 
 // to add a product to cart
-route.post("/add",auth, addToCart);
+route.post("/add", addToCart);
 
 
 
