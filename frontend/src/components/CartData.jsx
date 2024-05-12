@@ -1,5 +1,3 @@
-import styles from "../styles/styles";
-
 /* eslint-disable react/prop-types */
 const CartData = ({
     handleSubmit,
@@ -33,7 +31,7 @@ const CartData = ({
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            className={`${styles.input} h-[40px] pl-2`}
+            className="w-full border p-1 rounded-[5px] h-[40px] pl-2"
             placeholder="Coupoun code"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value)}

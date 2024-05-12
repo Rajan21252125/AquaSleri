@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { RxCross1 } from "react-icons/rx";
 import { IoBagHandleOutline } from "react-icons/io5";
-import styles from "../styles/styles";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slice/cartSlice";
@@ -80,7 +79,7 @@ const Cart = ({ setOpenCart }) => {
             <div>
               <div className="flex w-full justify-between items-center pt-3 pr-5">
                 {/* Item length */}
-                <div className={`${styles.noramlFlex} px-4`}>
+                <div className="flex items-center px-4">
                   <IoBagHandleOutline size={25} />
                   <h5 className="pl-2 text-[20px] font-[500]">
                     {cart && cart.length} items

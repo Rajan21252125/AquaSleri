@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import styles from "../styles/styles";
 import { Country, State } from "country-state-city";
 
 
@@ -30,7 +29,7 @@ const ShippingInfo = ({
                 type="text"
                 value={user && user.fullName}
                 required
-                className={`${styles.input} !w-[95%]`}
+                className="border p-1 rounded-[5px] !w-[95%]"
               />
             </div>
             <div className="w-[50%]">
@@ -39,7 +38,7 @@ const ShippingInfo = ({
                 type="email"
                 value={user && user.email}
                 required
-                className={`${styles.input}`}
+                className="w-full border p-1 rounded-[5px]"
               />
             </div>
           </div>
@@ -51,7 +50,7 @@ const ShippingInfo = ({
                 type="number"
                 required
                 value={user && user.phoneNumber}
-                className={`${styles.input} !w-[95%]`}
+                className="border p-1 rounded-[5px] !w-[95%]"
               />
             </div>
             <div className="w-[50%]">
@@ -61,7 +60,7 @@ const ShippingInfo = ({
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
                 required
-                className={`${styles.input}`}
+                className="w-full border p-1 rounded-[5px]"
               />
             </div>
           </div>
@@ -113,7 +112,7 @@ const ShippingInfo = ({
                 required
                 value={address1}
                 onChange={(e) => setAddress1(e.target.value)}
-                className={`${styles.input} !w-[95%]`}
+                className="border p-1 rounded-[5px] !w-[95%]"
               />
             </div>
             <div className="w-[50%]">
@@ -123,7 +122,7 @@ const ShippingInfo = ({
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
                 required
-                className={`${styles.input}`}
+                className="w-full border p-1 rounded-[5px]"
               />
             </div>
           </div>

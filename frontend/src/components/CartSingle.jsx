@@ -1,6 +1,5 @@
 import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
-import styles from "../styles/styles";
 import { addToCartApi, deleteCartItem } from "../api";
 import { toast } from "react-toastify";
 
@@ -44,7 +43,7 @@ const CartSingle = ({ data, removeFromCartHandler , fetchCart}) => {
         <div className="w-full flex items-center">
           <div>
             <div
-              className={`bg-gray-800 border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
+              className={`bg-gray-800 border border-[#e4434373] rounded-full w-[25px] h-[25px] flex items-center justify-center cursor-pointer`}
               onClick={() => increment(data)}
             >
               <HiPlus size={18} color="#fff" />

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from "../styles/styles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -134,7 +133,7 @@ const Checkout = () => {
         </div>
       </div>
       <div
-        className={`${styles.button} w-[150px] md:w-[70%] mt-10`}
+        className="bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer' w-[150px] md:w-[70%] mt-10"
         onClick={paymentSubmit}
       >
         <h5 className="text-white">Go to Payment</h5>
