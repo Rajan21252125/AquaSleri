@@ -1,24 +1,26 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../store/slice/cartSlice";
+import { useEffect, useState } from "react";
 import { viewCart } from "../api";
 
 const useGetCart = () => {
-    const dispatch = useDispatch();
+  const [cart, setCart] = useState([]);
+  const [totalPrice,setTotalPrice] = useState("")
     // fetch cart items
   const fetchCart = async () => {
     try {
       const data = await viewCart();
-    //   setCart(data?.data?.data || []);
-    dispatch(addToCart(data?.data?.data || []));
+      setTotalPrice(data?.data?.totalPrice)
+      setCart(data?.data?.data)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
   useEffect(() => {
     fetchCart();
   },[])
+
+
+  return {cart,totalPrice}
 }
 
 

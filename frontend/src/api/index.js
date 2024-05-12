@@ -41,4 +41,6 @@ export const activateAccount = (token) => API.get('/users/activate/' + token);
 // cart
 export const addToCartApi = (cartItems) => API.post('/cart/add' , {cartItems} , { withCredentials: true } )
 export const viewCart = () => API.get('/cart/view', { withCredentials: true });
-export const deleteCartItem = (data) => API.delete('/cart/delete' , { data } , { withCredentials: true });
+export const deleteCartItem = (productId) => API.delete(`/cart/delete/${productId}`, { withCredentials: true });
+export const deleteOneCartItem = (productId) => API.delete(`/cart/deleteOne/${productId}` , { withCredentials: true });
+export const clearCart = () => API.delete('/cart/clearCart' , { withCredentials: true });

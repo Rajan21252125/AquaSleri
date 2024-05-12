@@ -18,15 +18,20 @@ import useUserDeatil from "../customHook/useUserDeatil";
 import { useSelector } from "react-redux";
 import useGetProduct from "../customHook/useGetProduct";
 import Cart from "./Cart";
+import useGetCart from "../customHook/useGetCart";
 
 const Navbar = () => {
   useUserDeatil();
   useGetProduct();
+  const { cart } = useGetCart();
+  let cartNumber = 0
+  cart.forEach(item => {
+    cartNumber += item.quantity;
+  })
   const [openCart, setOpenCart] = useState(false);
   const { user } = useSelector((state) => state.userDetail);
   const [search, setSearch] = useState(false);
   const searchRef = useRef(null);
-  const cartData = useSelector((state) => state?.cart?.cartItems);
 
   const toggleSearch = () => {
     setSearch(!search);
@@ -103,9 +108,9 @@ const Navbar = () => {
                   onClick={() => setOpenCart(true)}
                 >
                   <IoCartOutline className="cursor-pointer" />
-                  {cartData?.length > 0 && (
+                  {cartNumber > 0 && (
                     <div className="absolute -top-2 -right-2 bg-gray-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px]">
-                      {cartData.length}
+                      {cartNumber}
                     </div>
                   )}
                 </div>

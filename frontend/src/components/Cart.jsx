@@ -3,30 +3,63 @@ import { RxCross1 } from "react-icons/rx";
 import { IoBagHandleOutline } from "react-icons/io5";
 import styles from "../styles/styles";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../store/slice/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/slice/cartSlice";
 import CartSingle from "./CartSingle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { clearCart, deleteOneCartItem, viewCart } from "../api";
+import { toast } from "react-toastify";
 
 const Cart = ({ setOpenCart }) => {
   const [value, setValue] = useState(1);
-  const cart = useSelector((state) => state.cart.cartItems);
+  const [cart, setCart] = useState([]);
+  const [totalPrice,setTotalPrice] = useState("")
+    // fetch cart items
+  const fetchCart = async () => {
+    try {
+      const data = await viewCart();
+      setTotalPrice(data?.data?.totalPrice)
+      setCart(data?.data?.data)
+    } catch (error) {
+      // console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCart();
+  },[])
 
   const dispatch = useDispatch();
 
-  const removeFromCartHandler = (data) => {
-    console.log(data)
-    dispatch(removeFromCart(data));
+  const removeFromCartHandler = async(data) => {
+    const productId = data?.productId
+    try {
+      const data = await deleteOneCartItem(productId);
+      if (data?.data?.status === true) {
+        fetchCart();
+        toast.success(data?.data?.msg)
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.msg)
+    }
   };
-
-  const totalPrice = cart?.reduce((acc, item) => {
-    return acc + (value * item?.discountedPrice);
-}, 0);
 
 
   const quantityChangeHandler = (data) => {
     dispatch(addToCart(data));
   };
+
+
+  const handleClearCart = async () => {
+    try {
+      const data = await clearCart();
+      setCart([])
+      if (data?.data?.success === true) return toast.success(data?.data?.msg)
+      return toast(data?.data?.msg)
+    } catch (error) {
+      toast.error(error?.response?.data?.msg)
+    }
+  }
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-50">
@@ -64,13 +97,14 @@ const Cart = ({ setOpenCart }) => {
               <br />
               <div className="w-full border-t">
                 <div className="flex justify-end mx-5 mt-2">
-                <button className="flex items-center justify-center bg-gray-800 text-white font-semibold py-2 px-4 rounded-md">Clear Cart</button>
+                <button className="flex items-center justify-center bg-gray-800 text-white font-semibold py-2 px-4 rounded-md" onClick={handleClearCart}>Clear Cart</button>
                 </div>
                 {cart &&
                   cart.map((i, index) => (
                     <CartSingle
                       key={index}
                       data={i}
+                      fetchCart={fetchCart}
                       quantityChangeHandler={quantityChangeHandler}
                       removeFromCartHandler={removeFromCartHandler}
                       value={value}

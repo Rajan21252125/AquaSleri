@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { addToCart } from '../store/slice/cartSlice';
 import { toast } from 'react-toastify';
+import { addToCartApi } from '../api';
 
 const DetailProductPage = () => {
     const { id } = useParams();
     const product = useSelector(state => state.product.products.find(product => product?._id === id));
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userDetail);
   const navigate = useNavigate();
 
@@ -21,13 +20,27 @@ const DetailProductPage = () => {
 
 
     const handleCart = async (product) => {
+        const cartData = [{
+            productId: product._id,
+            images : product.images,
+            productName: product.name,
+            price : product.discountedPrice
+          }]
         if(!user?._id){
           toast.error("Please login first");
           navigate("/login")
           return;
         }
-        dispatch(addToCart(product))
-        toast.success("Product added to cart");
+        try {
+            const data = await addToCartApi(cartData)
+            if (data?.data?.status === true) {
+              // window.location.reload();
+              toast.success(data?.data?.msg)
+            }
+          } catch (error) {
+            toast.error(error?.response?.data?.msg)
+          }
+
     };
 
     useEffect(() => {

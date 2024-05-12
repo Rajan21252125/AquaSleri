@@ -78,7 +78,7 @@ export const viewCart = async (req, res) => {
 export const deleteCartItem = async (req, res) => {
     try {
         const user = req.user.user.id;
-        const { productId } = req.body; // Assuming productId is passed in the request body
+        const productId = req.params.id; // Assuming productId is passed in the request body
         if (!user || !productId) {
             return res.status(400).json({ status: false, msg: 'All fields are required' });
         }
@@ -97,6 +97,7 @@ export const deleteCartItem = async (req, res) => {
                 items[itemIndex].quantity -= 1;
                 items[itemIndex].total = items[itemIndex].quantity * items[itemIndex].price
             }
+            cart.subTotal = cart.cartItems.map(item => item.total).reduce((acc, next) => acc + next);
             await cart.save(); // Save the updated cart
             return res.status(200).json({ status: true, msg: 'Item updated in cart successfully' });
         } else {
@@ -107,3 +108,56 @@ export const deleteCartItem = async (req, res) => {
         res.status(500).json({ status: false, msg: 'Internal Server Error' });
     }
 }
+
+
+// clear cart
+export const clearCart = async (req, res) => {
+    try {
+        const user = req.user.user.id;
+        if (!user) return res.status(401).json({ status: false, msg: "User Not found!" });
+        const userCart = await Cart.findOneAndDelete({ userId: user }); // Use findOneAndDelete to delete a single document
+        if (!userCart) return res.status(400).json({ status: false, msg: "Cart is Empty" });
+        return res.status(200).json({ success: true, msg: "All items deleted from the cart" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, msg: "Internal Server Error" });
+    }
+};
+
+
+
+// Define route to delete a particular product from the cart
+export const deleteProductFromCart = async (req, res) => {
+    try {
+        const user = req.user.user.id;
+        const productId = req.params.id; // Assuming productId is passed as a route parameter
+        if (!user || !productId) {
+            return res.status(400).json({ status: false, msg: 'User ID and Product ID are required' });
+        }
+        const cart = await Cart.findOne({ userId: user });
+        if (!cart) {
+            return res.status(404).json({ status: false, msg: 'Cart is empty' });
+        }
+        const items = cart.cartItems;
+        const itemIndex = items.findIndex(item => item.productId.toString() === productId);
+        if (itemIndex > -1) {
+            // Remove the product from the cart
+            items.splice(itemIndex, 1);
+            // Check if the cartItems array is not empty before calling reduce
+            if (items.length > 0) {
+                cart.subTotal = cart.cartItems.map(item => item.total).reduce((acc, next) => acc + next);
+            } else {
+                cart.subTotal = 0; // Set subTotal to 0 if cartItems array is empty
+            }
+            await cart.save(); // Save the updated cart
+            return res.status(200).json({ status: true, msg: 'Product deleted from cart successfully' });
+        } else {
+            return res.status(404).json({ status: false, msg: 'Product not found in cart' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, msg: 'Internal Server Error' });
+    }
+};
+
+

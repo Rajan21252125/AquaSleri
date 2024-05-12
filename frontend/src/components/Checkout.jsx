@@ -9,6 +9,7 @@ import axios from "axios";
 import ShippingInfo from "./ShippingInfo";
 import CartData from "./CartData";
 import { toast } from "react-toastify";
+import useGetCart from "../customHook/useGetCart";
 
 const Checkout = () => {
   const { user }  = useSelector((state) => state.userDetail);
@@ -23,6 +24,9 @@ const Checkout = () => {
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);
   const navigate = useNavigate();
+
+
+  const { totalPrice } = useGetCart();
 
 
   
@@ -57,10 +61,6 @@ const Checkout = () => {
     navigate("/payment");
    }
   };
-
-  const subTotalPrice = cart?.reduce((acc, item) => {
-    return acc + (item?.quantity * item?.discountedPrice);
-}, 0);
 
   // this is shipping cost variable
   const shipping = 100;
@@ -99,9 +99,7 @@ const Checkout = () => {
 
   const discountPercentenge = couponCodeData ? discountPrice : "";
 
-  const totalPrice = couponCodeData
-    ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)
-    : (subTotalPrice + shipping).toFixed(2);
+  const subTotalPrice = totalPrice + shipping
 
   return (
     <div className="w-full flex flex-col items-center py-8">
@@ -126,9 +124,9 @@ const Checkout = () => {
         <div className="md:w-full md:mt-0 mt-8">
           <CartData
             handleSubmit={handleSubmit}
-            totalPrice={totalPrice}
+            totalPrice={subTotalPrice}
             shipping={shipping}
-            subTotalPrice={subTotalPrice}
+            subTotalPrice={totalPrice}
             couponCode={couponCode}
             setCouponCode={setCouponCode}
             discountPercentenge={discountPercentenge}

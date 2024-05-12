@@ -1,24 +1,43 @@
-import { useState } from "react";
 import { HiOutlineMinus, HiPlus } from "react-icons/hi";
 import { RxCross1 } from "react-icons/rx";
 import styles from "../styles/styles";
+import { addToCartApi, deleteCartItem } from "../api";
+import { toast } from "react-toastify";
 
 /* eslint-disable react/prop-types */
-const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler , setValue , value}) => {
+const CartSingle = ({ data, removeFromCartHandler , fetchCart}) => {
     
     
-    const increment = (data) => {
-      setValue(value + 1);
-      const updateCartData = { ...data, quantity: value + 1 };
-      quantityChangeHandler(updateCartData);
+    const increment = async (data) => {
+      const cartData = [{
+        productId: data.productId,
+        images : data.images,
+        productName: data.productName,
+        price : data.price
+      }]
+      try {
+        const data = await addToCartApi(cartData)
+        if (data?.data?.status === true) {
+          fetchCart();
+          toast.success(data?.data?.msg)
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.msg)
+      }
     };
     
-    const decrement = (data) => {
-      setValue(value - 1);
-      quantityChangeHandler({ ...data, quantity: value - 1 });
+    const decrement = async (data) => {
+      const productId = data?.productId
+      try {
+        const data = await deleteCartItem(productId);
+        if (data?.data?.status === true) {
+          fetchCart();
+          toast.success(data?.data?.msg)
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.msg)
+      }
     };
-
-    const totalPrice = data?.discountedPrice * value;
   
     return (
       <div className="border-b p-4">
@@ -30,11 +49,11 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler , setVa
             >
               <HiPlus size={18} color="#fff" />
             </div>
-            <span className="pl-[10px]">{value}</span>
+            <span className="pl-[10px]">{data?.quantity}</span>
             <button
-              className={`bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center ${value <= 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
+              className={`bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center ${data?.quantity <= 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
               onClick={() => decrement(data)}
-              disabled={value <= 1}
+              disabled={data?.quantity <= 1}
             >
               <HiOutlineMinus size={16} color="#7d879c" />
             </button>
@@ -45,12 +64,12 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler , setVa
             className="w-[130px] h-min ml-2 mr-2 rounded-[5px]"
           />
           <div className="pl-[5px]">
-            <h1>{data?.name}</h1>
+            <h1>{data?.productName}</h1>
             <h4 className="font-[400] text-[15px] text-[#00000082]">
-            ₹{data?.discountedPrice}
+            ₹{data?.price}
             </h4>
             <h4 className="font-[600] text-[17px] pt-[3px] text-gray-800 font-Roboto">
-              INR ₹{totalPrice}
+              INR ₹{data?.total}
             </h4>
           </div>
           <RxCross1

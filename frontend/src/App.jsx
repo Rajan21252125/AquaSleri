@@ -27,7 +27,6 @@ const AdminHome = lazy(() => import("./Admin/AdminHome"));
 const ProductPage = lazy(() => import("./Admin/ProductPage"));
 
 const App = () => {
-
   const isOnline = useGetOfflineStatus();
 
   const data = useSelector((state) => state.product?.products);

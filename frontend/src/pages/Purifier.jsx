@@ -3,15 +3,13 @@ import { Link, useNavigate  } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../store/slice/cartSlice";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCartApi } from "../api";
 
 const Purifier = ({ filteredProducts, title }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { user } = useSelector((state) => state.userDetail);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const indexOfLastProduct = currentPage * 10;
@@ -30,15 +28,23 @@ const Purifier = ({ filteredProducts, title }) => {
   };
 
   const handleCart = async (product) => {
+    const cartData = [{
+      productId: product._id,
+      images : product.images,
+      productName: product.name,
+      price : product.discountedPrice
+    }]
     if(!user?._id){
       toast.error("Please login first");
       navigate("/login")
       return;
     }
-    dispatch(addToCart(product))
-    toast.success("Product added to cart");
     try {
-      const data = await addToCartApi(product)
+      const data = await addToCartApi(cartData)
+      if (data?.data?.status === true) {
+        // window.location.reload();
+        toast.success(data?.data?.msg)
+      }
     } catch (error) {
       toast.error(error?.response?.data?.msg)
     }
