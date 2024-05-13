@@ -13,7 +13,6 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import ViewForm from "./Admin/ViewForm";
 import ActivationPage from "./pages/ActivationPage";
 import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
-import User from "../../backend/Schema/UserSchema";
 import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
 
 // Lazy-loaded components
