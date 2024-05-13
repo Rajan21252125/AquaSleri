@@ -18,25 +18,16 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // Middleware
 app.use(express.json());
-
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ["http://localhost:5173","https://aquasleri.stranger2125.me"],
+    origin: ["http://localhost:5173", "https://aquasleri.stranger2125.me"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,  
+    credentials: true,
     exposedHeaders: ["Set-Cookie"]
 }));
 
-
-
-// Basic route
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
-
-
-// route for user login 
+// Define routes
 app.use('/api/users', UserRoute);
 app.use('/api/admin', ProductRoute);
 app.use('/api/cart', CartRoutes);
@@ -46,6 +37,7 @@ app.use('/api/feedback', feedBackRoute);
 mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log("Connected to MongoDB");
+
         // Define a cron job
         cron.schedule('0 0 * * *', async () => {
             try {
@@ -79,14 +71,13 @@ mongoose.connect(MONGODB_URI)
         console.error("Error connecting to MongoDB:", error);
     });
 
-
-
-app.get("/", (req,res) => {
-    res.send("Hello World");
-})
-
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
+});
+
+// Root path handler
+app.get("/", (req, res) => {
+    res.send("Hello World");
 });
