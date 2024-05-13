@@ -21,10 +21,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: "*",
+    origin: ["http://localhost:5173", "https://aquasleri.stranger2125.me"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    exposedHeaders: ["Set-Cookie","*"]
 }));
 
 // Define routes
