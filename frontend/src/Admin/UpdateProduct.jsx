@@ -22,6 +22,7 @@ const UpdateProduct = ({ data, setToggleShow }) => {
     { value: "Water Solution", label: "Water Solution" },
     { value: "New Arrival", label: "New Arrival" },
     { value: "Service", label: "Service" },
+    { value: 'AMC', label: 'AMC' },
   ];
 
   const handleChange = (selectedOptions) => {
@@ -44,8 +45,8 @@ const UpdateProduct = ({ data, setToggleShow }) => {
     const selectedFiles = fileArray.filter((file) =>
       allowedTypes.includes(file.type)
     );
-    if (selectedFiles.length > 5) {
-      toast.error("You can only upload up to 5 images");
+    if (selectedFiles.length > 10) {
+      toast.error("You can only upload up to 10 images");
       return;
     } else if (selectedFiles.length < fileArray.length) {
       toast.warning("Only JPG, JPEG, or PNG files are allowed");
@@ -58,7 +59,7 @@ const UpdateProduct = ({ data, setToggleShow }) => {
       ...formData,
       images: [
         ...formData.images,
-        ...imagePreviews.slice(0, 5 - formData.images.length),
+        ...imagePreviews.slice(0, 10 - formData.images.length),
       ],
     });
   };

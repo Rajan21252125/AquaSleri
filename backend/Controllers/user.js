@@ -43,12 +43,16 @@ export const signup = async (req, res) => {
         // Encrypt the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        let role
+        if (email === "aquasleri@gmail.com")  return role = "admin";
+
         // Create the user with hashed password
         const newUser = await User.create({
             email,
             password: hashedPassword,
             fullName,
-            phoneNumber
+            phoneNumber,
+            role
         });
 
 
@@ -96,12 +100,15 @@ export const login = async (req, res) => {
             return res.status(401).json({ status: false, msg: 'Invalid password.' });
         }
 
+        let role
+        if (email === "aquasleri@gmail.com")  return role = "admin";
+
         // Generate JWT token
         const data = { user: { id: user.id } };
         const token = JWT.sign(data, secretKey, { expiresIn: '3d' });
         res.cookie('token', token, { withCredentials: true, httpOnly: true });
 
-        return res.status(200).json({ status: true, msg: 'Login successful.' , isVerified : user?.isVerified });
+        return res.status(200).json({ status: true, msg: 'Login successful.' , isVerified : user?.isVerified , role });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ status: false, msg: 'Internal Server Error' });

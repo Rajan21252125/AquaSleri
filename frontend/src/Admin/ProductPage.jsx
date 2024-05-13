@@ -57,8 +57,8 @@ const AddProductPage = () => {
         return;
       }
   
-      if (formData.images.length + selectedFiles.length > 5) {
-        toast.error("You can only upload up to 5 images");
+      if (formData.images.length + selectedFiles.length > 10) {
+        toast.error("You can only upload up to 10 images");
         return;
       }
   

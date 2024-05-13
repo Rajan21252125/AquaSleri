@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ["http://localhost:5173","https://frontendaqua-sleri-cqhchymay-rajan21252125s-projects.vercel.app"],
+    origin: ["http://localhost:5173","https://aquasleri.stranger2125.me/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,  
     exposedHeaders: ["Set-Cookie"]

@@ -13,6 +13,8 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import ViewForm from "./Admin/ViewForm";
 import ActivationPage from "./pages/ActivationPage";
 import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
+import User from "../../backend/Schema/UserSchema";
+import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
@@ -39,6 +41,9 @@ const App = () => {
   const newArrival = data.filter((product) =>
     product.category.includes("New Arrival")
   );
+  const amckit = data.filter((product) =>
+    product.category.includes("AMC")
+  );
 
   return (
     <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
@@ -60,7 +65,7 @@ const App = () => {
               path="/new"
               element={<Purifier filteredProducts={newArrival} title={"New Arrival"} />}
             />
-            <Route path="/amc" element={<Amc />} />
+            <Route path="/amc" element={<Purifier filteredProducts={amckit} title={"AMC Kit"}/>} />
             <Route path="/checkout" element={<UserProtectedRoute><CheckoutPage /></UserProtectedRoute>} />
             <Route path="/payment" element={<UserProtectedRoute><PaymentPage /></UserProtectedRoute>} />
             <Route path="/profile" element={<UserProtectedRoute><Profile /></UserProtectedRoute>} />
@@ -70,10 +75,10 @@ const App = () => {
         />
             <Route path="*" element={<Error />} />
             {/* admin routes */}
-            <Route path="/admin" element={<AdminHome />} />
-            <Route path="/admin/products" element={<ProductPage />} />
-            <Route path="/admin/users" element={<UserPage />} />
-            <Route path="/admin/form" element={<ViewForm />} />
+            <Route path="/admin" element={<AdminProtectedRoute><AdminHome /></AdminProtectedRoute>} />
+            <Route path="/admin/products" element={<AdminProtectedRoute><ProductPage /></AdminProtectedRoute>} />
+            <Route path="/admin/users" element={<AdminProtectedRoute><UserPage /></AdminProtectedRoute>} />
+            <Route path="/admin/form" element={<AdminProtectedRoute><ViewForm /></AdminProtectedRoute>} />
           </Routes>
         </Suspense>
       </Router>
