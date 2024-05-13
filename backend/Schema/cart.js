@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 
 
-let ItemSchema = mongoose.Schema({
+let ItemSchema = new Schema({
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
