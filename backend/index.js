@@ -19,11 +19,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 // Middleware
 app.use(express.json());
 
-// Basic route
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
-
 app.use(cookieParser());
 
 app.use(cors({
@@ -32,6 +27,14 @@ app.use(cors({
     credentials: true,  
     exposedHeaders: ["Set-Cookie"]
 }));
+
+
+
+// Basic route
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
+
 
 // route for user login 
 app.use('/api/users', UserRoute);
