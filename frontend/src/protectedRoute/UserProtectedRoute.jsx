@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 const UserProtectedRoute = ({ children }) => {
     const [cookies] = useCookies([]);
-  if (cookies?.token) {
+  if (cookies?.token !== undefined) {
     return children;
   } else {
     return <Navigate to="/login" />;

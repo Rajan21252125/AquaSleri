@@ -6,8 +6,9 @@ import { GoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp, login, googleLogin, googleSignup } from "../api/index";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
 
-const Login = ({token}) => {
+const Login = () => {
   const navigate = useNavigate();
   const [toggleSignup, setToggleSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +18,7 @@ const Login = ({token}) => {
     fullName: "",
     phoneNumber: "",
   });
+  const [cookies] = useCookies([]);
 
   const toggleSignupForm = () => {
     setToggleSignup(!toggleSignup);
@@ -27,12 +29,13 @@ const Login = ({token}) => {
   };
 
   const googleSuccess = async (res) => {
-    if (toggleSignup) {
+    if (cookies.token) return navigate("/")
+    else if (toggleSignup) {
       try {
         const { data } = await googleSignup(res.credential);
         navigate("/");
         toast.success("Login Successfully");
-        localStorage.setItem("token",data?.token)
+        localStorage.setItem("role",data?.role)
         localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
@@ -41,9 +44,10 @@ const Login = ({token}) => {
     } else {
       try {
         const { data } = await googleLogin(res.credential);
+        if (data?.role === "admin") return navigate("/admin")
         navigate("/");
         toast.success("Logged in successfully");
-        localStorage.setItem("token",data?.token)
+        localStorage.setItem("role",data?.role)
         localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
@@ -62,6 +66,7 @@ const Login = ({token}) => {
   };
 
   const handleSubmit = async (e) => {
+    if (cookies.token) return navigate("/")
     e.preventDefault();
     try {
       if (toggleSignup) {
@@ -73,6 +78,7 @@ const Login = ({token}) => {
       } else {
         const { data } = await login(formData);
         if (data?.isVerified === false) return toast.error("Please verify your email");
+        console.log(data)
         localStorage.setItem("token",data?.token)
         localStorage.setItem("typeOfUser", false);
         navigate("/");

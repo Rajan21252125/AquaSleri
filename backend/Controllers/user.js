@@ -154,7 +154,6 @@ export const activationAccount = async (req, res) => {
       // Update the user document to set isVerified to true
       user.isVerified = true;
       await user.save();
-      console.log(user)
       
       // Redirect or respond with a success msg
       return res.status(200).json({ status: true, msg: 'User account activated successfully' });

@@ -13,7 +13,6 @@ const UserPage = () => {
         }
     }
 
-
     useEffect(() => {
         fetch();
     },[])
@@ -31,6 +30,7 @@ const UserPage = () => {
               <div className="text-center">
                 <h2 className="text-lg font-semibold">{user?.fullName}</h2>
                 <p className="text-gray-600">{user?.email}</p>
+                <p className="text-gray-600">{user?.role}</p>
                 <p className="text-gray-500 text-sm">{new Date(user?.createdAt).toLocaleDateString()}</p>
               </div>
             </div>

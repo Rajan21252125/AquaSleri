@@ -1,12 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiHome, FiUsers, FiSettings } from "react-icons/fi";
+import { logout } from "../api";
+import { removeUser } from "../store/slice/userSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
+  };
+
+  // Logout function
+  const toggleLogout = () => {
+    try {
+      logout();
+      dispatch(removeUser());
+      navigate("/login");
+      toast.success("Logged out successfully");
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+    }
   };
 
   return (
@@ -37,13 +55,12 @@ const AdminNavbar = () => {
                 <FiUsers className="mr-2 h-6 w-6 inline" />
                 Users
               </Link>
-              <Link
-                to="/admin/settings"
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center"
+              <p
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center cursor-pointer" onClick={toggleLogout}
               >
                 <FiSettings className="mr-2 h-6 w-6 inline" />
-                Settings
-              </Link>
+                Logout
+              </p>
             </div>
           </div>
 

@@ -14,11 +14,14 @@ export const googleSignUp = async (req, res) => {
       return res.status(401).json({status: false , message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(sub, 10);
+    let role
+        if (email === "aquasleri@gmail.com")  return role = "admin";
     const newUser = await Users.create({
       fullName: name,
       email,
       password: hashedPassword,
-      image: picture
+      image: picture,
+      role
     });
     const data = {
       user: {
@@ -34,7 +37,7 @@ export const googleSignUp = async (req, res) => {
       withCredentials: true,
       httpOnly: false,
     });
-    res.status(201).json({ status: true , msg: "User created Successfully" });
+    return res.status(200).json({ status: true, msg: 'Login successful.' , role : newUser.role });
   } catch (error) {
     console.log(error);
     res.status(501).json({ status: false , msg: "Internal server issue" });
@@ -72,7 +75,7 @@ export const googleLogin = async (req, res) => {
       withCredentials: true,
       httpOnly: false,
     });
-    res.status(201).json({ status: true , msg: "User created Successfully" });
+    return res.status(200).json({ status: true, msg: 'Login successful.' , role: existingUser.role });
   } catch (error) {
     console.log(error);
     res.status(501).json({ status: false , msg: "Internal server issue" });
