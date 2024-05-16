@@ -20,6 +20,7 @@ const AdminNavbar = () => {
     try {
       logout();
       dispatch(removeUser());
+      localStorage.clear();
       navigate("/login");
       toast.success("Logged out successfully");
     } catch (error) {

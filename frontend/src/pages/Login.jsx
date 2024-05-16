@@ -12,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [toggleSignup, setToggleSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading,setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -30,8 +31,9 @@ const Login = () => {
 
   const googleSuccess = async (res) => {
     if (cookies.token) return navigate("/")
-    else if (toggleSignup) {
-      try {
+      else if (toggleSignup) {
+    try {
+        setLoading(true)
         const { data } = await googleSignup(res.credential);
         navigate("/");
         toast.success("Login Successfully");
@@ -40,9 +42,12 @@ const Login = () => {
       } catch (error) {
         console.log(error);
         toast.error("Error creating account");
+      } finally {
+        setLoading(false)
       }
     } else {
       try {
+        setLoading(true)
         const { data } = await googleLogin(res.credential);
         if (data?.role === "admin") return navigate("/admin")
         navigate("/");
@@ -52,6 +57,8 @@ const Login = () => {
       } catch (error) {
         console.log(error);
         toast.error("Error logging in");
+      } finally {
+        setLoading(false)
       }
     }
   };
@@ -69,6 +76,7 @@ const Login = () => {
     if (cookies.token) return navigate("/")
     e.preventDefault();
     try {
+      setLoading(true)
       if (toggleSignup) {
         const { data } = await signUp(formData);
         localStorage.setItem("token",data?.token)
@@ -87,6 +95,8 @@ const Login = () => {
     } catch (error) {
       console.log(error?.response?.data?.msg);
       toast.error(error?.response?.data?.msg);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -202,7 +212,7 @@ const Login = () => {
               className="text-red-600 hover:underline hover:underline-offset-4"
               onClick={toggleSignupForm}
             >
-              {toggleSignup ? "Login" : "Register"}
+              {toggleSignup ? loading ? "Loging In..." : "Login" : loading ? "Registering..." : "Register"}
             </button>
           </div>
         </div>

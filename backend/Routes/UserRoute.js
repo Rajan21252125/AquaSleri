@@ -6,11 +6,12 @@ import auth from '../Middleware/auth.js';
 import { uploadImage } from '../Controllers/imageUpload.js';
 import upload from '../Middleware/multer.js';
 import { getProductById } from '../Controllers/product.js';
+import adminAuth from '../Middleware/adminAuth.js';
 
 const route = express.Router();
 
 // Get all users
-route.get('/', getAllUser);
+route.get('/',adminAuth, getAllUser);
 
 // Signup route with validation middleware
 route.post('/signup', validateSignup, signup);

@@ -1,6 +1,7 @@
 import express from "express";
-import { addToCart, clearCart, deleteCartItem, deleteProductFromCart, viewCart } from "../Controllers/cartController.js";
+import { addToCart, clearCart, deleteCartItem, deleteProductFromCart, viewAllCartData, viewCart } from "../Controllers/cartController.js";
 import auth from "../Middleware/auth.js";
+import adminAuth from "../Middleware/adminAuth.js";
 
 
 
@@ -37,6 +38,15 @@ route.delete("/deleteOne/:id",auth,deleteProductFromCart)
 
 // clear cart
 route.delete("/clearCart",auth,clearCart)
+
+
+
+
+
+// get data
+route.get("/admin/view",adminAuth , viewAllCartData)
+
+
 
 
 

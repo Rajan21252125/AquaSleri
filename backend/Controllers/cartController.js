@@ -161,3 +161,20 @@ export const deleteProductFromCart = async (req, res) => {
 };
 
 
+
+
+
+// Controller function to view all cart data
+export const viewAllCartData = async (req, res) => {
+    try {
+        // Retrieve all cart data from the database
+        const allCartData = await Cart.find();
+        
+        // Return the cart data in the response
+        res.status(200).json({ success: true, data: allCartData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, msg: 'Internal Server Error' });
+    }
+};
+

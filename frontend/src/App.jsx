@@ -14,6 +14,7 @@ import ViewForm from "./Admin/ViewForm";
 import ActivationPage from "./pages/ActivationPage";
 import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
 import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
+import LoginProtectedRoute from "./protectedRoute/LoginProtectedRoute";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
@@ -49,7 +50,7 @@ const App = () => {
       <Router>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<LoginProtectedRoute><Login /></LoginProtectedRoute>} />
             <Route path="/" element={<Home />} />
             <Route
               path="/purifiers"

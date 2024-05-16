@@ -57,7 +57,7 @@ export const signup = async (req, res) => {
 
 
         const activationToken = createActivationToken(newUser);
-        const activationUrl = `http://localhost:5173/activation/${activationToken}`;
+        const activationUrl = `${FRONTEND_URL}activation/${activationToken}`;
 
         try {
             await sendMail({

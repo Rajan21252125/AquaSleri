@@ -19,12 +19,12 @@ export const addFeedback = (data) => API.post('/feedback/add' , data );
 
 
 
-export const addProduct = (data) => API.post('/admin/add' , data )
-export const addMultiImage = (data) => API.post('/admin/multiImage' , data )
+export const addProduct = (data) => API.post('/admin/add' , data , { withCredentials: true } )
+export const addMultiImage = (data) => API.post('/admin/multiImage' , data , { withCredentials: true })
 export const getProductList = () => API.get('/admin/view')
 export const deleteProduct = (id) => API.delete('/admin/delete/' + id)
 export const updateProduct = (data,id) => API.put('/admin/update/'+id , data)
-export const users = () => API.get('/users/')
+export const users = () => API.get('/users/' , { withCredentials: true })
 export const deleteSingleImage = (id, imageUrl) => API.delete(`/admin/deleteImage/${id}`, { data: { imageUrl } });
 export const getFeedback = () => API.get('/feedback/view')
 export const deleteFeedback = (id) => API.delete('/feedback/delete/' + id)
