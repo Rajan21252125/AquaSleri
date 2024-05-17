@@ -1,1 +1,1 @@
-const FRONTEND_URL = "http://aquasleri.stranger2125.me/"
+export const FRONTEND_URL = "http://aquasleri.stranger2125.me/"

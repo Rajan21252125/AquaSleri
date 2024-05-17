@@ -15,6 +15,7 @@ import ActivationPage from "./pages/ActivationPage";
 import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
 import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
 import LoginProtectedRoute from "./protectedRoute/LoginProtectedRoute";
+import AdminUserCart from "./Admin/AdminUserCart";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
@@ -79,6 +80,7 @@ const App = () => {
             <Route path="/admin/products" element={<AdminProtectedRoute><ProductPage /></AdminProtectedRoute>} />
             <Route path="/admin/users" element={<AdminProtectedRoute><UserPage /></AdminProtectedRoute>} />
             <Route path="/admin/form" element={<AdminProtectedRoute><ViewForm /></AdminProtectedRoute>} />
+            <Route path="/admin/abundantCart" element={<AdminProtectedRoute><AdminUserCart /></AdminProtectedRoute>} />
           </Routes>
         </Suspense>
       </Router>

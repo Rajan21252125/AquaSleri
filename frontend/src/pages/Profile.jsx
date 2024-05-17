@@ -65,6 +65,7 @@ const Profile = () => {
     try {
       logout();
       dispatch(removeUser());
+      localStorage.clear();
       navigate("/");
       toast.success("Logged out successfully");
     } catch (error) {

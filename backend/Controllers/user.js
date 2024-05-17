@@ -4,6 +4,7 @@ import JWT from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import {sendMail} from '../utils/sendEmail.js';
+import { FRONTEND_URL } from '../utils/constant.js';
 dotenv.config();
 
 const secretKey = process.env.JWT_SECRET;

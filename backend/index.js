@@ -9,6 +9,10 @@ import CartRoutes from './Routes/CartRoutes.js';
 import feedBackRoute from './Routes/feedBackRoute.js';
 import cron from 'node-cron';
 import User from './Schema/UserSchema.js';
+import PaymentRoute from './Routes/PaymentRoute.js';
+
+
+
 
 dotenvConfig();
 
@@ -31,6 +35,7 @@ app.use('/api/users', UserRoute);
 app.use('/api/admin', ProductRoute);
 app.use('/api/cart', CartRoutes);
 app.use('/api/feedback', feedBackRoute);
+app.use('/api/payment', PaymentRoute);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI)

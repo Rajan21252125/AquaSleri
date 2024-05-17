@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Navbar from "../components/Navbar";
@@ -12,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [toggleSignup, setToggleSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -20,6 +19,8 @@ const Login = () => {
     phoneNumber: "",
   });
   const [cookies] = useCookies([]);
+  const roleData = localStorage.getItem("role");
+  console.log(roleData);
 
   const toggleSignupForm = () => {
     setToggleSignup(!toggleSignup);
@@ -30,35 +31,39 @@ const Login = () => {
   };
 
   const googleSuccess = async (res) => {
-    if (cookies.token) return navigate("/")
-      else if (toggleSignup) {
-    try {
-        setLoading(true)
+    if (toggleSignup) {
+      try {
+        setLoading(true);
         const { data } = await googleSignup(res.credential);
+        localStorage.setItem("role", data?.role);
+        localStorage.setItem("typeOfUser", "true");
+        if (data?.role === "admin") {
+          return navigate("/admin");
+        }
         navigate("/");
-        toast.success("Login Successfully");
-        localStorage.setItem("role",data?.role)
-        localStorage.setItem("typeOfUser", true);
+        toast.success("Signup Successfully");
       } catch (error) {
         console.log(error);
         toast.error("Error creating account");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     } else {
       try {
-        setLoading(true)
+        setLoading(true);
         const { data } = await googleLogin(res.credential);
-        if (data?.role === "admin") return navigate("/admin")
+        localStorage.setItem("role", data?.role);
+        localStorage.setItem("typeOfUser", "true");
+        if (data?.role === "admin") {
+          return navigate("/admin");
+        }
         navigate("/");
         toast.success("Logged in successfully");
-        localStorage.setItem("role",data?.role)
-        localStorage.setItem("typeOfUser", true);
       } catch (error) {
         console.log(error);
         toast.error("Error logging in");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -73,22 +78,25 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    if (cookies.token) return navigate("/")
+    if (cookies.token) {
+      return navigate("/");
+    }
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       if (toggleSignup) {
         const { data } = await signUp(formData);
-        localStorage.setItem("token",data?.token)
-        localStorage.setItem("typeOfUser", false);
+        localStorage.setItem("token", data?.token);
+        localStorage.setItem("typeOfUser", "false");
         navigate("/login");
         toast.success(data?.msg);
       } else {
         const { data } = await login(formData);
-        if (data?.isVerified === false) return toast.error("Please verify your email");
-        console.log(data)
-        localStorage.setItem("token",data?.token)
-        localStorage.setItem("typeOfUser", false);
+        if (data?.isVerified === false) {
+          return toast.error("Please verify your email");
+        }
+        localStorage.setItem("token", data?.token);
+        localStorage.setItem("typeOfUser", "false");
         navigate("/");
         toast.success(data?.msg);
       }
@@ -96,7 +104,7 @@ const Login = () => {
       console.log(error?.response?.data?.msg);
       toast.error(error?.response?.data?.msg);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -188,7 +196,8 @@ const Login = () => {
                 <span>Show Password</span>
               </label>
               {!toggleSignup && (
-                <Link to={"/forgot-password"}
+                <Link
+                  to={"/forgot-password"}
                   className="text-blue-600 hover:text-blue-700 cursor-pointer hover:underline hover:underline-offset-4"
                 >
                   Forgot Password?
@@ -200,7 +209,13 @@ const Login = () => {
                 className="mt-4 bg-blue-600 w-full hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
                 type="submit"
               >
-                {toggleSignup ? "Sign-In" : "Login"}
+                {toggleSignup
+                  ? loading
+                    ? "Signing In...."
+                    : "Sign-In"
+                  : loading
+                  ? "Logging In...."
+                  : "Login"}
               </button>
             </div>
           </form>
@@ -212,7 +227,7 @@ const Login = () => {
               className="text-red-600 hover:underline hover:underline-offset-4"
               onClick={toggleSignupForm}
             >
-              {toggleSignup ? loading ? "Loging In..." : "Login" : loading ? "Registering..." : "Register"}
+              {toggleSignup ? "Login" : "Register"}
             </button>
           </div>
         </div>
