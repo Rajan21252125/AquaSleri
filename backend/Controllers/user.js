@@ -48,7 +48,7 @@ export const signup = async (req, res) => {
         if (email === "aquasleri@gmail.com")  return role = "admin";
 
         // Create the user with hashed password
-        const newUser = await User.create({
+        const newUser = new User({
             email,
             password: hashedPassword,
             fullName,
@@ -70,6 +70,7 @@ export const signup = async (req, res) => {
               status: true,
               msg: `please check your email:- ${newUser.email} to activate your account!`,
             });
+            return await newUser.save();
           } catch (error) {
             console.log(error);
             return res.status(500).json({ status: false, msg: 'Internal Server Error' });

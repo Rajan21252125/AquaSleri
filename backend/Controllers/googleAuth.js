@@ -21,7 +21,8 @@ export const googleSignUp = async (req, res) => {
       email,
       password: hashedPassword,
       image: picture,
-      role
+      role,
+      isVerified : true
     });
     const data = {
       user: {

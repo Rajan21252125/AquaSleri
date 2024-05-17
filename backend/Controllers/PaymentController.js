@@ -11,7 +11,6 @@ const razorpayInstance = new Razorpay({
 
 
 console.log()
-// ROUTE 1 : Create Order Api Using POST Method http://localhost:4000/api/payment/order
 export const orderPayment = (req, res) => {
     const { amount } = req.body;
 
@@ -35,7 +34,7 @@ export const orderPayment = (req, res) => {
     }
 }
 
-// ROUTE 2 : Create Verify Api Using POST Method http://localhost:4000/api/payment/verify
+
 export const verifyPayment = async (req, res) => {
     const user = req.user.user.id;
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature ,orderData } = req.body;
