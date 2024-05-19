@@ -33,8 +33,14 @@ const App = () => {
   const isOnline = useGetOfflineStatus();
 
   const data = useSelector((state) => state.product?.products);
-  const purifier = data && data.filter((product) =>
-    product.category.includes("Water Purifier")
+  const premiumPurifier = data && data.filter((product) =>
+    product.category.includes("Water Purifier - Premium")
+  );
+  const midRangePurifier = data && data.filter((product) =>
+    product.category.includes("Water Purifier - Mid Range")
+  );
+  const budgetFriendlypurifier = data && data.filter((product) =>
+    product.category.includes("Water Purifier - Budget Friendly")
   );
   const solution = data.filter((product) =>
     product.category.includes("Water Solution")
@@ -46,6 +52,7 @@ const App = () => {
     product.category.includes("AMC")
   );
 
+
   return (
     <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
       <Router>
@@ -54,8 +61,16 @@ const App = () => {
             <Route path="/login" element={<LoginProtectedRoute><Login /></LoginProtectedRoute>} />
             <Route path="/" element={<Home />} />
             <Route
-              path="/purifiers"
-              element={<Purifier filteredProducts={purifier} title={"Water Purifier"} />}
+              path="/budgetFriendly"
+              element={<Purifier filteredProducts={budgetFriendlypurifier} title={"Water Purifier - Budget Friendly"} />}
+            />
+            <Route
+              path="/midRange"
+              element={<Purifier filteredProducts={midRangePurifier} title={"Water Purifier - Mid Range"} />}
+            />
+            <Route
+              path="/premium"
+              element={<Purifier filteredProducts={premiumPurifier} title={"Water Purifier - Premium"} />}
             />
             <Route
               path="/solutions"

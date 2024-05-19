@@ -221,6 +221,23 @@ export const getUserDetail = async (req,res) => {
 
 
 
+// get the user detail by id
+export const getUserById = async (req,res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if(!user){
+            return res.status(404).json({ msg: 'User not found.' });
+        }
+        res.status(200).json(user);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ msg: 'Internal Server Error' });
+    }
+}
+
+
+
+
 
 // update the user detail
 export const updateUserDetail = async (req, res) => {

@@ -10,6 +10,7 @@ import feedBackRoute from './Routes/feedBackRoute.js';
 import cron from 'node-cron';
 import User from './Schema/UserSchema.js';
 import PaymentRoute from './Routes/PaymentRoute.js';
+import OrderRoute from './Routes/orderRoutes.js'
 
 
 
@@ -36,6 +37,7 @@ app.use('/api/admin', ProductRoute);
 app.use('/api/cart', CartRoutes);
 app.use('/api/feedback', feedBackRoute);
 app.use('/api/payment', PaymentRoute);
+app.use('/api/order', OrderRoute);
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI)

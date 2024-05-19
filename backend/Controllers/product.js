@@ -35,11 +35,11 @@ export const viewProduct = async (req, res) => {
 // Route to update a product by ID
 export const updateProduct = async (req, res) => {
     try {
-        const { name, description, images, realPrice, discountedPrice } = req.body;
-        if (!name || !description || !images || !realPrice || !discountedPrice) {
+        const { name, description, images, realPrice, discountedPrice , category } = req.body;
+        if (!name || !description || !images || !realPrice || !discountedPrice || !category) {
             return res.status(400).json({ status: false, msg: 'All fields are required' });
         }
-        const updatedProduct = await Product.updateOne({ _id: req.params.id }, { name, description, images, realPrice, discountedPrice });
+        const updatedProduct = await Product.updateOne({ _id: req.params.id }, { name, description, images, realPrice, discountedPrice , category });
         if (!updatedProduct) {
             return res.status(404).json({ status: false, msg: 'Product not found' });
         }

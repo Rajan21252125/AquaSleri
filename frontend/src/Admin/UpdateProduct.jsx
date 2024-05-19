@@ -18,10 +18,12 @@ const UpdateProduct = ({ data, setToggleShow }) => {
   const [loading, setLoading] = useState(false);
 
   const options = [
-    { value: "Water Purifier", label: "Water Purifier" },
-    { value: "Water Solution", label: "Water Solution" },
-    { value: "New Arrival", label: "New Arrival" },
-    { value: "Service", label: "Service" },
+    { value: 'Water Purifier - Premium', label: 'Water Purifier - Premium' },
+    { value: 'Water Purifier - Mid Range', label: 'Water Purifier - Mid Range' },
+    { value: 'Water Purifier - Budget Friendly', label: 'Water Purifier - Budget Friendly' },
+    { value: 'Water Solution', label: 'Water Solution' },
+    { value: 'New Arrival', label: 'New Arrival' },
+    { value: 'Service', label: 'Service' },
     { value: 'AMC', label: 'AMC' },
   ];
 

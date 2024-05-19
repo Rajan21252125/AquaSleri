@@ -19,10 +19,6 @@ const PaymentSchema = new Schema({
         type: String,
         required: true,
     },
-    orderData : {
-        type: Object,
-        required: true
-    },
     date: {
         type: Date,
         default: Date.now

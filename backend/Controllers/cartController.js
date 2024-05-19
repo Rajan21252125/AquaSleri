@@ -1,3 +1,4 @@
+import User from '../Schema/UserSchema.js';
 import Cart from '../Schema/cart.js';
 
 
@@ -167,6 +168,10 @@ export const deleteProductFromCart = async (req, res) => {
 // Controller function to view all cart data
 export const viewAllCartData = async (req, res) => {
     try {
+        const userId = req.user.user.id;
+        if (!userId) {
+            return res.status(400).json({ success: false, msg: 'User ID is required' });
+        }
         // Retrieve all cart data from the database
         const allCartData = await Cart.find();
         

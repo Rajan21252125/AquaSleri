@@ -19,15 +19,16 @@ import { useSelector } from "react-redux";
 import useGetProduct from "../customHook/useGetProduct";
 import Cart from "./Cart";
 import useGetCart from "../customHook/useGetCart";
+import Tooltip from "./Tootip";
 
 const Navbar = () => {
   useUserDeatil();
   useGetProduct();
   const { cart } = useGetCart();
-  let cartNumber = 0
-  cart.forEach(item => {
+  let cartNumber = 0;
+  cart.forEach((item) => {
     cartNumber += item.quantity;
-  })
+  });
   const [openCart, setOpenCart] = useState(false);
   const { user } = useSelector((state) => state.userDetail);
   const [search, setSearch] = useState(false);
@@ -77,11 +78,23 @@ const Navbar = () => {
                 />
               </Link>
               <ul className="hidden text-white text-[12px] lg:text-base xl:text-lg space-x-4 lg:space-x-8 ml-4 lg:ml-8 md:flex md:items-center">
-                <Link to={"/purifiers"}>
+                <Tooltip content={
+                      <div className="flex flex-col space-y-2 w-40">
+                        <Link to={"/budgetFriendly"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
+                          Budget Friendly
+                        </Link>
+                        <Link to={"/midRange"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
+                          Mid Range
+                        </Link>
+                        <Link to={"/premium"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
+                          Premium
+                        </Link>
+                      </div>
+                    }>
                   <li className="cursor-pointer flex items-center">
                     Water Purifier
                   </li>
-                </Link>
+                  </Tooltip>
                 <Link to={"/solutions"}>
                   <li className="cursor-pointer flex items-center">
                     Water Solutions
@@ -116,19 +129,28 @@ const Navbar = () => {
                 </div>
               </div>
               {user ? (
-                <Link to="/profile">
-                  <div className="group relative">
+                  <Tooltip
+                    content={
+                      <div className="flex flex-col space-y-2 w-28">
+                        <Link to={"/profile"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
+                          Profile
+                        </Link>
+                        <Link to={"/user/order"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
+                          Order
+                        </Link>
+                      </div>
+                    }
+                  >
                     {user?.image ? (
                       <img
                         src={user?.image}
-                        alt=""
+                        alt="User"
                         className="rounded-full w-8 h-8 border border-white"
                       />
                     ) : (
                       <FaCircleUser className="rounded-full w-8 h-8 border border-white" />
                     )}
-                  </div>
-                </Link>
+                  </Tooltip>
               ) : (
                 <Link to="/login">
                   <FiUser className="cursor-pointer" />

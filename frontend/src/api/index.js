@@ -29,6 +29,8 @@ export const deleteSingleImage = (id, imageUrl) => API.delete(`/admin/deleteImag
 export const getFeedback = () => API.get('/feedback/view')
 export const deleteFeedback = (id) => API.delete('/feedback/delete/' + id)
 export const getUserCart = () => API.get('/cart/admin/view/',{ withCredentials: true })
+// get user by id
+export const getUserById = (id) => API.get('/users/user/' + id , { withCredentials: true })
 
 
 
@@ -54,5 +56,12 @@ export const clearCart = () => API.delete('/cart/clearCart' , { withCredentials:
 
 
 // paymemt 
-export const orderapi = (amount) => API.post('/payment/order',{amount},{withCredentials : true})
+export const orderapi = (amount) => API.post('/payment/payment',{amount},{withCredentials : true})
 export const verifyPayment = (paymentDetails) => API.post('/payment/verify', paymentDetails, { withCredentials: true });
+
+
+
+
+// order
+export const createOrder = (orderDetails) => API.post('/order/create-order', orderDetails, { withCredentials: true });
+export const getAllOrders = () => API.get('/order/admin/get-orders',{withCredentials:true})

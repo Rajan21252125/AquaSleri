@@ -8,13 +8,15 @@ const route = express.Router();
 
 
 
-route.post("/order",auth,orderPayment)
+route.post("/payment",auth,orderPayment)
 
 
 
 
 
 route.post("/verify",auth,verifyPayment)
+
+
 
 
 

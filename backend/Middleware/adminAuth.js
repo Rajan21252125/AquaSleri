@@ -4,7 +4,6 @@ dotenv.config();
 
 // Authentication middleware
 const adminAuth = (req, res, next) => {
-    console.log(req.cookies)
   try {
     // Get the token from the request headers
     const token = req.cookies.token

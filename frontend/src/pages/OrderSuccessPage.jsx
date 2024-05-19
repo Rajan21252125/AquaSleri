@@ -2,12 +2,18 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Lottie from "react-lottie";
 import animationData from "../assets/animations/107043-success.json";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const OrderSuccessPage = () => {
   return (
     <div>
       <Navbar />
+      <br />
+      <br />
+      <CheckoutSteps active={3} />
       <Success />
+      <br />
+        <br />
       <Footer />
     </div>
   );

@@ -5,6 +5,8 @@ import { logout } from "../api";
 import { removeUser } from "../store/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { BsDatabaseAdd } from "react-icons/bs";
+import { GiShoppingCart } from "react-icons/gi";
 
 const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +57,20 @@ const AdminNavbar = () => {
               >
                 <FiUsers className="mr-2 h-6 w-6 inline" />
                 Users
+              </Link>
+              <Link
+                to="/admin/orders"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center"
+              >
+                <BsDatabaseAdd className="mr-2 h-6 w-6 inline" />
+                Order Data
+              </Link>
+              <Link
+                to="/admin/abundantCart"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center"
+              >
+                <GiShoppingCart className="mr-2 h-6 w-6 inline" />
+                Abundant Cart
               </Link>
               <p
                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center cursor-pointer" onClick={toggleLogout}
