@@ -14,8 +14,10 @@ import ViewForm from "./Admin/ViewForm";
 import ActivationPage from "./pages/ActivationPage";
 import UserProtectedRoute from "./protectedRoute/UserProtectedRoute";
 import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
-import LoginProtectedRoute from "./protectedRoute/LoginProtectedRoute";
 import AdminUserCart from "./Admin/AdminUserCart";
+import OrderPage from "./pages/OrderPage";
+import AllOrders from "./Admin/AllOrders";
+import DetailedOrderPage from "./pages/DetailedOrderPage";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
@@ -58,7 +60,7 @@ const App = () => {
       <Router>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/login" element={<LoginProtectedRoute><Login /></LoginProtectedRoute>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
             <Route
               path="/budgetFriendly"
@@ -87,6 +89,8 @@ const App = () => {
             <Route path="/profile" element={<UserProtectedRoute><Profile /></UserProtectedRoute>} />
             <Route path="/product/:id" element={<DetailProductPage />} />
             <Route path="/order/success" element={<UserProtectedRoute><OrderSuccessPage /></UserProtectedRoute>} />
+            <Route path="/user/order" element={<UserProtectedRoute><OrderPage /></UserProtectedRoute>} />
+            <Route path="/user/order/:id" element={<UserProtectedRoute><DetailedOrderPage /></UserProtectedRoute>} />
             <Route path="/activation/:activation_token" element={<ActivationPage />}
         />
             <Route path="*" element={<Error />} />
@@ -96,6 +100,7 @@ const App = () => {
             <Route path="/admin/users" element={<AdminProtectedRoute><UserPage /></AdminProtectedRoute>} />
             <Route path="/admin/form" element={<AdminProtectedRoute><ViewForm /></AdminProtectedRoute>} />
             <Route path="/admin/abundantCart" element={<AdminProtectedRoute><AdminUserCart /></AdminProtectedRoute>} />
+            <Route path="/admin/orders" element={<AdminProtectedRoute><AllOrders /></AdminProtectedRoute>} />
           </Routes>
         </Suspense>
       </Router>

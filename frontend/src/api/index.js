@@ -65,3 +65,6 @@ export const verifyPayment = (paymentDetails) => API.post('/payment/verify', pay
 // order
 export const createOrder = (orderDetails) => API.post('/order/create-order', orderDetails, { withCredentials: true });
 export const getAllOrders = () => API.get('/order/admin/get-orders',{withCredentials:true})
+export const getOrdersById = () => API.get('/order/get-order',{withCredentials:true})
+export const updateOrder = (id,status) => API.put('/order/admin/updateOrder/'+ id, {status} , {withCredentials:true})
+export const getOrderByProductId = (id) => API.get('/order/order-page/order/'+ id, {withCredentials:true})

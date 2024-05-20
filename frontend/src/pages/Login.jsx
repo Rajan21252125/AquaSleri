@@ -86,6 +86,7 @@ const Login = () => {
       setLoading(true);
       if (toggleSignup) {
         const { data } = await signUp(formData);
+        localStorage.setItem("role", data?.role);
         localStorage.setItem("token", data?.token);
         localStorage.setItem("typeOfUser", "false");
         navigate("/login");
@@ -95,6 +96,8 @@ const Login = () => {
         if (data?.isVerified === false) {
           return toast.error("Please verify your email");
         }
+        console.log(data)
+        localStorage.setItem("role", data?.role);
         localStorage.setItem("token", data?.token);
         localStorage.setItem("typeOfUser", "false");
         navigate("/");

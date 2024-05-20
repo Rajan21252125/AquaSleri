@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import {
   IoSearch,
   IoCartOutline,
-  IoMicOutline,
   IoBulbOutline,
 } from "react-icons/io5";
 import { BsRocket } from "react-icons/bs";
@@ -21,7 +21,7 @@ import Cart from "./Cart";
 import useGetCart from "../customHook/useGetCart";
 import Tooltip from "./Tootip";
 
-const Navbar = () => {
+const Navbar = ({ setSearchQuery }) => {
   useUserDeatil();
   useGetProduct();
   const { cart } = useGetCart();
@@ -33,10 +33,20 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.userDetail);
   const [search, setSearch] = useState(false);
   const searchRef = useRef(null);
+  const [searchText, setSearchText] = useState("");
 
   const toggleSearch = () => {
     setSearch(!search);
+    setSearchText("")
+    setSearchQuery("")
   };
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+    if (searchText === "") return setSearchQuery("")
+    setSearchQuery(searchText.trim())
+  };
+
 
   useEffect(() => {
     if (search) {
@@ -52,23 +62,24 @@ const Navbar = () => {
         {/* Desktop View */}
         {search ? (
           <div className="flex justify-center items-center h-full">
-            <div className="relative flex justify-center items-center h-full">
-              <IoSearch className="absolute left-2 text-white text-base lg:text-xl" />
-              <input
-                type="text"
-                ref={searchRef}
-                className="bg-gray-600 py-1 lg:py-2 px-8 text-base rounded-lg text-white focus:outline-none w-72 md:w-96"
-                placeholder="Search for products"
-              />
-              <IoMicOutline className="absolute right-8 text-white text-xl" />
-              <RxCross2
-                className="absolute right-2 text-white text-xl cursor-pointer"
-                onClick={toggleSearch}
-              />
-            </div>
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={searchText}
+                  ref={searchRef}
+                  onChange={handleSearchChange}
+                  className="bg-gray-600 py-1 lg:py-2 px-8 text-base rounded-lg text-white focus:outline-none w-72 md:w-96"
+                  placeholder="Search for products"
+                />
+                <IoSearch className="absolute left-2 text-white text-base lg:text-xl" />
+                <RxCross2
+                  className="absolute right-2 text-white text-xl cursor-pointer"
+                  onClick={toggleSearch}
+                />
+              </div>
           </div>
         ) : (
-          <div className="flex items-center justify-between h-full mx-6 sm:mx-10 lg:mx-20">
+          <div className="flex items-center justify-between h-full mx-6 lg:mx-10 xl:mx-20">
             <div className="md:flex justify-between">
               <Link to="/">
                 <img
@@ -77,38 +88,63 @@ const Navbar = () => {
                   className="w-24 md:w-32 bg-white/65 px-3 py-1 rounded-lg"
                 />
               </Link>
-              <ul className="hidden text-white text-[12px] lg:text-base xl:text-lg space-x-4 lg:space-x-8 ml-4 lg:ml-8 md:flex md:items-center">
-                <Tooltip content={
-                      <div className="flex flex-col space-y-2 w-40">
-                        <Link to={"/budgetFriendly"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
-                          Budget Friendly
-                        </Link>
-                        <Link to={"/midRange"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
-                          Mid Range
-                        </Link>
-                        <Link to={"/premium"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
-                          Premium
-                        </Link>
-                      </div>
-                    }>
+              <ul className="hidden text-white  text-[12px] xl:text-[14px] space-x-4 xl:space-x-8 ml-4 lg:ml-8 md:flex md:items-center">
+                <Tooltip
+                  content={
+                    <div className="flex flex-col space-y-2 w-40">
+                      <Link
+                        to={"/budgetFriendly"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Budget Friendly
+                      </Link>
+                      <Link
+                        to={"/midRange"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Mid Range
+                      </Link>
+                      <Link
+                        to={"/premium"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Premium
+                      </Link>
+                    </div>
+                  }
+                >
                   <li className="cursor-pointer flex items-center">
                     Water Purifier
                   </li>
-                  </Tooltip>
-                <Link to={"/solutions"}>
+                </Tooltip>
+                <Tooltip
+                  content={
+                    <div className="flex flex-col space-y-2 w-40">
+                      <Link
+                        to={"/budgetFriendly"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Spare Parts
+                      </Link>
+                      <Link
+                        to={"/midRange"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Universal Kits & Sets
+                      </Link>
+                    </div>
+                  }
+                >
                   <li className="cursor-pointer flex items-center">
-                    Water Solutions
+                    Universal Accessories
                   </li>
-                </Link>
+                </Tooltip>
                 <Link to={"/service"}>
-                  <li className="cursor-pointer">Service</li>
+                  <li className="cursor-pointer">Industrial & Commercial</li>
                 </Link>
-                <Link to={"/new"}>
-                  <li className="cursor-pointer flex items-start relative">
-                    New Arrivals{" "}
-                    <p className="text-red-500 absolute -top-1 -right-2 text-base lg:text-xl">
-                      *
-                    </p>
+                <Link to={""}>
+                  <li className="cursor-pointer flex items-start">
+                  Rainwater Harvesting
                   </li>
                 </Link>
               </ul>
@@ -117,7 +153,7 @@ const Navbar = () => {
               <IoSearch className="cursor-pointer" onClick={toggleSearch} />
               <div className="relative">
                 <div
-                  className="relative cursor-pointer mr-[15px]"
+                  className="relative cursor-pointer"
                   onClick={() => setOpenCart(true)}
                 >
                   <IoCartOutline className="cursor-pointer" />
@@ -129,37 +165,43 @@ const Navbar = () => {
                 </div>
               </div>
               {user ? (
-                  <Tooltip
-                    content={
-                      <div className="flex flex-col space-y-2 w-28">
-                        <Link to={"/profile"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
-                          Profile
-                        </Link>
-                        <Link to={"/user/order"} className="hover:bg-gray-400 p-1 font-semibold text-base rounded">
-                          Order
-                        </Link>
-                      </div>
-                    }
-                  >
-                    {user?.image ? (
-                      <img
-                        src={user?.image}
-                        alt="User"
-                        className="rounded-full w-8 h-8 border border-white"
-                      />
-                    ) : (
-                      <FaCircleUser className="rounded-full w-8 h-8 border border-white" />
-                    )}
-                  </Tooltip>
+                <Tooltip
+                  content={
+                    <div className="flex flex-col space-y-2 w-28">
+                      <Link
+                        to={"/profile"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        to={"/user/order"}
+                        className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                      >
+                        Order
+                      </Link>
+                    </div>
+                  }
+                >
+                  {user?.image ? (
+                    <img
+                      src={user?.image}
+                      alt="User"
+                      className="rounded-full w-8 h-8 border border-white"
+                    />
+                  ) : (
+                    <FaCircleUser className="rounded-full w-8 h-8 border border-white" />
+                  )}
+                </Tooltip>
               ) : (
                 <Link to="/login">
                   <FiUser className="cursor-pointer" />
                 </Link>
               )}
 
-              <Link to={"/amc"}>
-                <p className="hidden md:block text-[14px] lg:text-base bg-white text-black px-4 py-1 rounded-3xl font-bold hover:bg-blue-900 hover:text-white cursor-pointer transition duration-200">
-                  Buy AMC
+              <Link to={"/new"}>
+                <p className="hidden md:block text-[10px] xl:text-[14px] bg-white text-black px-2 py-1 rounded-3xl font-bold hover:bg-blue-900 hover:text-white cursor-pointer transition duration-200">
+                  New Arrivals
                 </p>
               </Link>
             </div>
@@ -168,11 +210,34 @@ const Navbar = () => {
         {/* Mobile View */}
         <div className="md:hidden flex py-3 px-4 fixed bottom-0  text-black text-lg bg-gray-800 shadow-xl w-full">
           <ul className="flex space-x-4 items-center justify-evenly w-full">
-            <Link to={"/purifiers"}>
+            <Tooltip
+              content={
+                <div className="flex flex-col space-y-2 w-40">
+                  <Link
+                    to={"/budgetFriendly"}
+                    className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                  >
+                    Budget Friendly
+                  </Link>
+                  <Link
+                    to={"/midRange"}
+                    className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                  >
+                    Mid Range
+                  </Link>
+                  <Link
+                    to={"/premium"}
+                    className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                  >
+                    Premium
+                  </Link>
+                </div>
+              }
+            >
               <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
                 <PiSquaresFour className="text-sm sm:text-base" /> Purifier
               </li>
-            </Link>
+            </Tooltip>
             <Link to={"/solutions"}>
               <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
                 <IoBulbOutline className="text-sm sm:text-base" /> Solutions

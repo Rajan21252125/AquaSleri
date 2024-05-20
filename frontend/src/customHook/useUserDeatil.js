@@ -9,8 +9,13 @@ const useUserDeatil = () => {
     const dispatch = useDispatch();
     const data = async () => {
         if (cookies) {
-            const data = await userData()
-            dispatch(setUser(data?.data))
+            try {
+                const data = await userData()
+                console.log(data)
+                dispatch(setUser(data?.data))
+            } catch (error) {
+                // console.log(error)
+            }
         }
     }
 

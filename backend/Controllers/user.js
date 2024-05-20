@@ -102,15 +102,14 @@ export const login = async (req, res) => {
             return res.status(401).json({ status: false, msg: 'Invalid password.' });
         }
 
-        let role
-        if (email === "aquasleri@gmail.com")  return role = "admin";
+        if (email === "aquasleri@gmail.com")  return user.role = "admin";
 
         // Generate JWT token
         const data = { user: { id: user.id } };
         const token = JWT.sign(data, secretKey, { expiresIn: '3d' });
         res.cookie('token', token, { withCredentials: true, httpOnly: true });
 
-        return res.status(200).json({ status: true, msg: 'Login successful.' , isVerified : user?.isVerified , role });
+        return res.status(200).json({ status: true, msg: 'Login successful.' , isVerified : user?.isVerified , role : user.role });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ status: false, msg: 'Internal Server Error' });
@@ -162,7 +161,7 @@ export const activationAccount = async (req, res) => {
     } catch (error) {
       // Handle any errors and return an error response
       console.error(error);
-      return res.status(500).json({ status: false, msg: 'Internal Server Error' });
+      return res.status(500).json({ status: false, msg: 'Internal Server Error',error });
     }
   };
 
