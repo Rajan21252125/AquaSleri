@@ -21,6 +21,8 @@ const orderSchema = new mongoose.Schema({
       ref : 'Payment',
     }
   },
+  order_id : {type : String},
+  shipment_id : {type : String},
   subTotalPrice: { type: Number, required: true },
   shippingPrice: { type: Number, required: true },
   totalPrice: { type: Number, required: true },

@@ -31,7 +31,7 @@ export const createOrder = async (req, res) => {
     });
 
     await order.save();
-    return res.status(200).json({ status: true , msg : 'Order Successfull'})
+    return res.status(200).json({ status: true , msg : 'Order Successfull' , order})
   } catch (error) {
     res.status(400).json({status:false , msg: error.message });
   }

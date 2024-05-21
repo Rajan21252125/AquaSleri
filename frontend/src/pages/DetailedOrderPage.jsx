@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getOrderByProductId, getUserById } from "../api";
+import { getOrderByOrderId, getUserById } from "../api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const DetailedOrderPage = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const DetailedOrderPage = () => {
 
   const fetchOrderAndUser = async () => {
     try {
-      const orderData = await getOrderByProductId(id);
+      const orderData = await getOrderByOrderId(id);
       setOrder(orderData?.data);
 
       if (orderData?.data?.user) {
@@ -25,8 +26,20 @@ const DetailedOrderPage = () => {
     }
   };
 
+
+
+  const fetchTrackingDetail = async () => {
+    try {
+      const data = await axios.get(`https://apiv2.shiprocket.in/v1/external/courier/track?order_id=${id}`)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     fetchOrderAndUser();
+    fetchTrackingDetail();
   }, [id]);
 
   const getStatusProgress = (status) => {

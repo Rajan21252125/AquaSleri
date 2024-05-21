@@ -21,10 +21,9 @@ const UpdateProduct = ({ data, setToggleShow }) => {
     { value: 'Water Purifier - Premium', label: 'Water Purifier - Premium' },
     { value: 'Water Purifier - Mid Range', label: 'Water Purifier - Mid Range' },
     { value: 'Water Purifier - Budget Friendly', label: 'Water Purifier - Budget Friendly' },
-    { value: 'Water Solution', label: 'Water Solution' },
-    { value: 'New Arrival', label: 'New Arrival' },
-    { value: 'Service', label: 'Service' },
-    { value: 'AMC', label: 'AMC' },
+    { value: 'Spare Parts', label: 'Spare Parts' },
+    { value: 'Universal Kits & sets', label: 'Universal Kits & sets' },
+    { value: 'New Arrivals', label: 'New Arrivals' },
   ];
 
   const handleChange = (selectedOptions) => {

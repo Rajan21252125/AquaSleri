@@ -6,7 +6,11 @@ import { toast } from "react-toastify";
 
 const Checkout = () => {
   const { user }  = useSelector((state) => state.userDetail);
-  const [country, setCountry] = useState("");
+  const [fullName , setFullName ] = useState(user?.fullName)
+  const [email , setEmail ] = useState(user?.email)
+  const [phoneNumber , setPhoneNumber ] = useState(user?.phoneNumber)
+  const [country, setCountry] = useState("IN");
+  const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [userInfo, setUserInfo] = useState(false);
   const [address1, setAddress1] = useState("");
@@ -22,15 +26,19 @@ const Checkout = () => {
 
 
   const proceedToPayment = () => {
-    if (address1 === "" || address2 === "" || zipCode === null || country === "" || city === "") {
+    if (address1 === "" || address2 === "" || zipCode === null || country === "" || state === "" || city === "") {
       toast.error("Please choose your delivery address!");
     } else {
       const shippingAddress = {
+        fullName,
+        email,
+        phoneNumber,
         address1,
         address2,
         zipCode,
-        country,
         city,
+        country,
+        state,
       };
       navigate("/payment", { state: { shippingAddress } });
     }
@@ -43,8 +51,16 @@ const Checkout = () => {
         <div className="w-full md:w-full flex flex-col">
           <ShippingInfo
             user={user}
+            fullName={fullName}
+            setFullName={setFullName}
+            email={email}
+            setEmail={setEmail}
+            phoneNumber={phoneNumber}
+            setPhoneNumber={setPhoneNumber}
             country={country}
             setCountry={setCountry}
+            state={state}
+            setState={setState}
             city={city}
             setCity={setCity}
             userInfo={userInfo}

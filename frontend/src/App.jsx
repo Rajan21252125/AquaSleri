@@ -18,13 +18,13 @@ import AdminUserCart from "./Admin/AdminUserCart";
 import OrderPage from "./pages/OrderPage";
 import AllOrders from "./Admin/AllOrders";
 import DetailedOrderPage from "./pages/DetailedOrderPage";
+import CategoryPage from "./pages/CategoryPage";
+import { categories , harvesting } from "./constant/data";
 
 // Lazy-loaded components
 const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
 const Purifier = lazy(() => import("./pages/Purifier"));
-const Service = lazy(() => import("./pages/Service"));
-const Amc = lazy(() => import("./pages/Amc"));
 const Profile = lazy(() => import("./pages/Profile"));
 const DetailProductPage = lazy(() => import("./pages/DetailProductPage"));
 // admin lazy load
@@ -44,14 +44,14 @@ const App = () => {
   const budgetFriendlypurifier = data && data.filter((product) =>
     product.category.includes("Water Purifier - Budget Friendly")
   );
-  const solution = data.filter((product) =>
-    product.category.includes("Water Solution")
+  const spare = data.filter((product) =>
+    product.category.includes("Spare Parts")
+  );
+  const kitsSets = data.filter((product) =>
+    product.category.includes("Universal Kits & sets")
   );
   const newArrival = data.filter((product) =>
-    product.category.includes("New Arrival")
-  );
-  const amckit = data.filter((product) =>
-    product.category.includes("AMC")
+    product.category.includes("New Arrivals")
   );
 
 
@@ -76,14 +76,15 @@ const App = () => {
             />
             <Route
               path="/solutions"
-              element={<Purifier filteredProducts={solution} title={"Water Solution"} />}
+              element={<Purifier filteredProducts={spare} title={"Spare Parts - Water Solution"} />}
             />
-            <Route path="/service" element={<Service />} />
+            <Route path="/service" element={<CategoryPage categories={categories} title={"Industrial & Commercial"}/>} />
+            <Route path="/rainwaterHarvesting" element={<CategoryPage categories={harvesting} title={"Rainwater Harvesting"}/>} />
             <Route
               path="/new"
               element={<Purifier filteredProducts={newArrival} title={"New Arrival"} />}
             />
-            <Route path="/amc" element={<Purifier filteredProducts={amckit} title={"AMC Kit"}/>} />
+            <Route path="/amc" element={<Purifier filteredProducts={kitsSets} title={"AMC Kit & Sets"}/>} />
             <Route path="/checkout" element={<UserProtectedRoute><CheckoutPage /></UserProtectedRoute>} />
             <Route path="/payment" element={<UserProtectedRoute><PaymentPage /></UserProtectedRoute>} />
             <Route path="/profile" element={<UserProtectedRoute><Profile /></UserProtectedRoute>} />

@@ -1,10 +1,18 @@
 /* eslint-disable react/prop-types */
-import { Country, State } from "country-state-city";
+import { State, City } from "country-state-city";
 
 const ShippingInfo = ({
   user,
+  fullName,
+  setFullName,
+  email,
+  setEmail,
+  phoneNumber,
+  setPhoneNumber,
   country,
   setCountry,
+  state,
+  setState,
   city,
   setCity,
   userInfo,
@@ -26,8 +34,8 @@ const ShippingInfo = ({
             <label className="block pb-2">Full Name</label>
             <input
               type="text"
-              value={user && user.fullName}
-              readOnly
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="border p-1 rounded-[5px] !w-[95%]"
             />
           </div>
@@ -35,8 +43,8 @@ const ShippingInfo = ({
             <label className="block pb-2">Email Address</label>
             <input
               type="email"
-              value={user && user.email}
-              readOnly
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border p-1 rounded-[5px]"
             />
           </div>
@@ -47,8 +55,8 @@ const ShippingInfo = ({
             <label className="block pb-2">Phone Number</label>
             <input
               type="number"
-              value={user && user.phoneNumber}
-              readOnly
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="border p-1 rounded-[5px] !w-[95%]"
             />
           </div>
@@ -65,7 +73,7 @@ const ShippingInfo = ({
         </div>
 
         <div className="w-full flex pb-3">
-          <div className="w-[50%]">
+          {/* <div className="w-[50%]">
             <label className="block pb-2">Country</label>
             <select
               className="w-[95%] border h-[40px] rounded-[5px]"
@@ -82,6 +90,24 @@ const ShippingInfo = ({
                   </option>
                 ))}
             </select>
+          </div> */}
+          <div className="w-[50%]">
+            <label className="block pb-2">State</label>
+            <select
+              className="w-[95%] border h-[40px] rounded-[5px]"
+              value={state || ""}
+              onChange={(e) => setState(e.target.value)}
+            >
+              <option className="block pb-2" value="">
+                Choose your state
+              </option>
+              {State &&
+                State.getStatesOfCountry(country).map((item) => (
+                  <option key={item.isoCode} value={item.isoCode}>
+                    {item.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className="w-[50%]">
             <label className="block pb-2">City</label>
@@ -91,10 +117,10 @@ const ShippingInfo = ({
               onChange={(e) => setCity(e.target.value)}
             >
               <option className="block pb-2" value="">
-                Choose your City
+                Choose your city
               </option>
-              {State &&
-                State.getStatesOfCountry(country).map((item) => (
+              {City &&
+                City.getCitiesOfState(country, state).map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
                     {item.name}
                   </option>
@@ -129,7 +155,7 @@ const ShippingInfo = ({
         className="text-[18px] cursor-pointer inline-block"
         onClick={() => setUserInfo(!userInfo)}
       >
-        Choose From saved address
+        Choose From Saved Address
       </h5>
       {userInfo && (
         <div>
@@ -145,6 +171,7 @@ const ShippingInfo = ({
                     setAddress2(item.address2);
                     setZipCode(item.zipCode);
                     setCountry(item.country);
+                    setState(item.state);
                     setCity(item.city);
                   }}
                 />

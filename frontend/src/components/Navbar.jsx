@@ -85,11 +85,12 @@ const Navbar = ({ setSearchQuery }) => {
                 <img
                   src={logo}
                   alt="Navbar logo"
-                  className="w-24 md:w-32 bg-white/65 px-3 py-1 rounded-lg"
+                  className="w-24 md:w-32 xl:w-40 bg-white px-3 py-1 rounded-lg"
                 />
               </Link>
               <ul className="hidden text-white  text-[12px] xl:text-[14px] space-x-4 xl:space-x-8 ml-4 lg:ml-8 md:flex md:items-center">
                 <Tooltip
+                  styles = {"left-1/2 top-6"}
                   content={
                     <div className="flex flex-col space-y-2 w-40">
                       <Link
@@ -118,16 +119,17 @@ const Navbar = ({ setSearchQuery }) => {
                   </li>
                 </Tooltip>
                 <Tooltip
+                  styles={"left-1/2 top-6"}
                   content={
                     <div className="flex flex-col space-y-2 w-40">
                       <Link
-                        to={"/budgetFriendly"}
+                        to={"/solutions"}
                         className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
                       >
                         Spare Parts
                       </Link>
                       <Link
-                        to={"/midRange"}
+                        to={"/amc"}
                         className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
                       >
                         Universal Kits & Sets
@@ -142,7 +144,7 @@ const Navbar = ({ setSearchQuery }) => {
                 <Link to={"/service"}>
                   <li className="cursor-pointer">Industrial & Commercial</li>
                 </Link>
-                <Link to={""}>
+                <Link to={"/rainwaterHarvesting"}>
                   <li className="cursor-pointer flex items-start">
                   Rainwater Harvesting
                   </li>
@@ -166,6 +168,7 @@ const Navbar = ({ setSearchQuery }) => {
               </div>
               {user ? (
                 <Tooltip
+                  styles={"-left-5 top-6"}
                   content={
                     <div className="flex flex-col space-y-2 w-28">
                       <Link
@@ -200,8 +203,8 @@ const Navbar = ({ setSearchQuery }) => {
               )}
 
               <Link to={"/new"}>
-                <p className="hidden md:block text-[10px] xl:text-[14px] bg-white text-black px-2 py-1 rounded-3xl font-bold hover:bg-blue-900 hover:text-white cursor-pointer transition duration-200">
-                  New Arrivals
+                <p className="hidden md:block text-[10px] xl:text-[14px] bg-white text-black px-4 py-1 rounded-3xl font-bold hover:bg-blue-900 hover:text-white cursor-pointer transition duration-200">
+                  New
                 </p>
               </Link>
             </div>
@@ -211,6 +214,7 @@ const Navbar = ({ setSearchQuery }) => {
         <div className="md:hidden flex py-3 px-4 fixed bottom-0  text-black text-lg bg-gray-800 shadow-xl w-full">
           <ul className="flex space-x-4 items-center justify-evenly w-full">
             <Tooltip
+              styles={"left-16 bottom-12"}
               content={
                 <div className="flex flex-col space-y-2 w-40">
                   <Link
@@ -238,25 +242,43 @@ const Navbar = ({ setSearchQuery }) => {
                 <PiSquaresFour className="text-sm sm:text-base" /> Purifier
               </li>
             </Tooltip>
-            <Link to={"/solutions"}>
+            <Tooltip
+              styles={"left-16 bottom-12"}
+              content={
+                <div className="flex flex-col space-y-2 w-40">
+                  <Link
+                    to={"/solutions"}
+                    className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                  >
+                    Spare Parts
+                  </Link>
+                  <Link
+                    to={"/amc"}
+                    className="hover:bg-gray-400 p-1 font-semibold text-base rounded"
+                  >
+                    Universal Kits & Sets
+                  </Link>
+                </div>
+              }     
+            >
               <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
-                <IoBulbOutline className="text-sm sm:text-base" /> Solutions
+                <IoBulbOutline className="text-sm sm:text-base" /> AMC
               </li>
-            </Link>
+            </Tooltip>
             <Link to={"/service"}>
               <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
                 <HiOutlineWrenchScrewdriver className="text-sm sm:text-base" />{" "}
-                Service
+                Industrial
+              </li>
+            </Link>
+            <Link to={"/rainwaterHarvesting"}>
+              <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
+                <GrNotes className="text-sm sm:text-base" /> Rainwater
               </li>
             </Link>
             <Link to={"/new"}>
               <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
-                <BsRocket className="text-sm sm:text-base" /> New Arrivals
-              </li>
-            </Link>
-            <Link to={"/amc"}>
-              <li className="cursor-pointer relative flex flex-col items-center text-[10px] sm:text-sm font-semibold text-white hover:underline">
-                <GrNotes className="text-sm sm:text-base" /> Buy AMC
+                <BsRocket className="text-sm sm:text-base" /> New
               </li>
             </Link>
           </ul>

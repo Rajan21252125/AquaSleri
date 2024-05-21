@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import CartData from './CartData';
 import useGetCart from "../customHook/useGetCart";
+import createShiprocketOrder from "../constant/createShiprocketOrder";
 
 const Payment = () => {
   const location = useLocation();
@@ -67,15 +68,18 @@ const Payment = () => {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
-            orderData
           });
           console.log("Verify Payment Response:", verifyResponse);
 
           const verifyData = verifyResponse.data;
           if (verifyData.status) {
             orderData.paymentInfo.id = verifyData.id;
+            orderData.isPaid = true
             const order = await createOrder(orderData);
+            const data = order.data.order
             if (order.data.status === true) {
+              const shippingData = await createShiprocketOrder(data)
+              console.log(shippingData)
               toast.success(order.data.msg);
               handleClearCart();
               navigate("/order/success");
@@ -168,6 +172,7 @@ const Payment = () => {
       try {
         const order = await createOrder(orderData);
         if (order.data.status === true) {
+          await createShiprocketOrder(order.data.order)
           toast.success(order.data.msg);
           handleClearCart();
           navigate("/order/success");
