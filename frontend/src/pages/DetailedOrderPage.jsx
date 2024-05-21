@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getOrderByOrderId, getUserById } from "../api";
+import { getOrderByOrderId } from "../api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useParams } from "react-router-dom";
@@ -7,39 +7,42 @@ import axios from "axios";
 
 const DetailedOrderPage = () => {
   const { id } = useParams();
+  const token = import.meta.env.VITE_SHIPROCKET_ID;
   const [order, setOrder] = useState(null);
-  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [trackingDetails, setTrackingDetails] = useState(null);
 
   const fetchOrderAndUser = async () => {
     try {
       const orderData = await getOrderByOrderId(id);
-      setOrder(orderData?.data);
-
-      if (orderData?.data?.user) {
-        const userData = await getUserById(orderData.data.user);
-        setError("");
-        setUser(userData?.data);
+      setOrder(orderData.data);
+      if (orderData.data.order_id) {
+        fetchTrackingDetail(orderData.data.shipment_id);
       }
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred");
     }
   };
 
-
-
-  const fetchTrackingDetail = async () => {
+  const fetchTrackingDetail = async (orderId) => {
+    console.log(orderId)
     try {
-      const data = await axios.get(`https://apiv2.shiprocket.in/v1/external/courier/track?order_id=${id}`)
+      const { data } = await axios.get(`https://apiv2.shiprocket.in/v1/external/courier/track/shipment/${orderId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
       console.log(data)
+      setTrackingDetails(data);
+      console.log(trackingDetails)
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchOrderAndUser();
-    fetchTrackingDetail();
   }, [id]);
 
   const getStatusProgress = (status) => {
@@ -76,13 +79,13 @@ const DetailedOrderPage = () => {
       <div className="container mx-auto mt-8 px-4">
         <h1 className="text-center text-2xl font-bold">Order Details</h1>
         {error && <div className="text-center text-red-600 mt-4">{error}</div>}
-        {order && user ? (
+        {order ? (
           <div className="my-10 lg:mx-20 border-2 p-4 md:p-6">
             {/* Delivery Address and User Information */}
             <div className="mb-8 flex justify-between">
               <div>
                 <h2 className="text-lg font-semibold mb-2">Delivery Address</h2>
-                <p>{user.fullName}</p>
+                <p>{order.shippingAddress.fullName}</p>
                 <p>{order.shippingAddress.address1}</p>
                 <p>{order.shippingAddress.address2}</p>
                 <p>
@@ -90,7 +93,7 @@ const DetailedOrderPage = () => {
                   {order.shippingAddress.zipCode}
                 </p>
                 <p>{order.shippingAddress.country}</p>
-                <p>Phone number: {user.phoneNumber}</p>
+                <p>Phone number: {order.shippingAddress.phoneNumber}</p>
               </div>
               <div>
                 <h2 className="text-lg font-semibold mt-4 mb-2">Order Id</h2>

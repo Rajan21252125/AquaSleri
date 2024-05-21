@@ -3,7 +3,6 @@ import cloudinary from '../utils/cloudinary.js';
 
 export const multiImageUpload = async (req, res, next) => {
   // Access the uploaded files through req.files
-  console.log(req.files)
   if (!req.files || req.files.length === 0) {
     return res.status(400).send({ msg: 'No files uploaded.' });
   }

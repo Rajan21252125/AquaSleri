@@ -32,7 +32,7 @@ const createShiprocketOrder = async (orderData) => {
       hsn: "",
     })),
     payment_method: orderData?.paymentInfo.method === "COD" ? "COD" : "Prepaid",
-    shipping_charges: orderData?.shippingPrice,
+    shipping_charges: 0,
     giftwrap_charges: 0,
     transaction_charges: 0,
     total_discount: 0,

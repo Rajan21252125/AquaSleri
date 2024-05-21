@@ -128,3 +128,24 @@ export const getOrderByProductId = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+
+
+
+// add order id and shipment id 
+export const addOrderShipmentId = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      console.log(data)
+      order.shipment_id = data.shipment_id;
+      order.order_id = data.order_id;
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
+    } else {
+      res.status(404).json({ msg: 'Order not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};

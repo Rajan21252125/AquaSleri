@@ -22,7 +22,6 @@ export const orderPayment = (req, res) => {
                 console.log("Razorpay Order Creation Error:", error);
                 return res.status(500).json({ status: false, msg: "Something Went Wrong!" });
             }
-            console.log("Razorpay Order Created:", order);
             res.status(200).json({ data: order });
         });
     } catch (error) {
@@ -52,7 +51,6 @@ export const verifyPayment = async (req, res) => {
             });
 
             await payment.save();
-            console.log("Payment Verified and Saved:", payment);
 
             res.json({
                 status: true,

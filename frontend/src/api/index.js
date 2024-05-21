@@ -68,3 +68,4 @@ export const getAllOrders = () => API.get('/order/admin/get-orders',{withCredent
 export const getOrdersById = () => API.get('/order/get-order',{withCredentials:true})
 export const updateOrder = (id,status) => API.put('/order/admin/updateOrder/'+ id, {status} , {withCredentials:true})
 export const getOrderByOrderId = (id) => API.get('/order/order-page/order/'+ id, {withCredentials:true})
+export const addOrderShipmentId = (id,data) => API.put('/order/add-shipment-id/'+ id,{data} ,{withCredentials:true})

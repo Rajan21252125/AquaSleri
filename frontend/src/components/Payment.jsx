@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { clearCart, createOrder, orderapi, verifyPayment, viewCart } from "../api";
+import { addOrderShipmentId, clearCart, createOrder, orderapi, verifyPayment, viewCart } from "../api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import CartData from './CartData';
@@ -78,8 +78,10 @@ const Payment = () => {
             const order = await createOrder(orderData);
             const data = order.data.order
             if (order.data.status === true) {
+              console.log(data)
               const shippingData = await createShiprocketOrder(data)
-              console.log(shippingData)
+              const dataToStore = { order_id:shippingData.order_id , shipment_id : shippingData.shipment_id}
+              await addOrderShipmentId(data?._id,dataToStore)
               toast.success(order.data.msg);
               handleClearCart();
               navigate("/order/success");
@@ -172,7 +174,9 @@ const Payment = () => {
       try {
         const order = await createOrder(orderData);
         if (order.data.status === true) {
-          await createShiprocketOrder(order.data.order)
+          const shippingData = await createShiprocketOrder(order.data.order)
+          const dataToStore = { order_id:shippingData.order_id , shipment_id : shippingData.shipment_id}
+          await addOrderShipmentId(order.data.order?._id,dataToStore)
           toast.success(order.data.msg);
           handleClearCart();
           navigate("/order/success");
@@ -180,6 +184,7 @@ const Payment = () => {
           toast.error(order.data.msg);
         }
       } catch (error) {
+        console.log(error)
         toast.error("Something went wrong, please try again later.");
       }
     }

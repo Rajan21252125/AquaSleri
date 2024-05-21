@@ -1,7 +1,7 @@
 import express from 'express';
 import auth from '../Middleware/auth.js';
 import adminAuth from '../Middleware/auth.js';
-import { createOrder, getOrderByProductId, getOrders, getOrdersByUserId, updateOrderStatus } from '../Controllers/orderController.js';
+import { addOrderShipmentId, createOrder, getOrderByProductId, getOrders, getOrdersByUserId, updateOrderStatus } from '../Controllers/orderController.js';
 
 
 
@@ -38,6 +38,13 @@ route.put("/admin/updateOrder/:id",adminAuth,updateOrderStatus)
 
 // get order by order id 
 route.get("/order-page/order/:id",auth,getOrderByProductId)
+
+
+
+
+
+// adding shimentid and orderid 
+route.put("/add-shipment-id/:id",auth,addOrderShipmentId)
 
 
 
